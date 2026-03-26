@@ -17,7 +17,7 @@ export function AppHeader() {
     <header className="border-b border-border bg-background/80 backdrop-blur-md sticky top-0 z-50">
       <div className="container flex items-center justify-between h-14 max-w-5xl mx-auto px-4">
         <Link to="/" className="flex items-center gap-2.5">
-          <img src={logo} alt="Studious Sarv" className="h-8 w-8 rounded-full" />
+          <img src={logo} alt="Studious Sarv" className="h-8 w-8 rounded-full object-cover" />
           <span className="font-display text-lg font-bold text-foreground tracking-tight">
             Studious Sarv
           </span>

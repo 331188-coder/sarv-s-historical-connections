@@ -85,3 +85,7 @@
     font-family: var(--font-body);
   }
 }
+
+#lovable-badge {
+  display: none !important;
+}
