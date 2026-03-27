@@ -18,7 +18,7 @@ export function useConnectionsGame(puzzle: DailyPuzzle) {
     solved: [],
     mistakes: 0,
     maxMistakes: 4,
-    timeRemaining: 120,
+    timeRemaining: 180, // 3 minutes
     isComplete: false,
     isPerfect: true,
   });
@@ -99,10 +99,10 @@ export function useConnectionsGame(puzzle: DailyPuzzle) {
 
   const calculateScore = useCallback((): PrestigeScore => {
     const won = state.solved.length === 4;
-    const base = won ? 100 : 0;
-    const perfectBonus = state.isPerfect && won ? 50 : 0;
-    const speedBonus = won ? state.timeRemaining : 0;
-    const streakMultiplier = 1; // placeholder
+    const base = won ? 200 : 0;
+    const perfectBonus = state.isPerfect && won ? 300 : 0;
+    const speedBonus = won ? Math.round(state.timeRemaining * 5) : 0;
+    const streakMultiplier = 1; // placeholder for future streak
     const total = Math.round((base + perfectBonus + speedBonus) * streakMultiplier);
     return { base, perfectBonus, speedBonus, streakMultiplier, total };
   }, [state]);

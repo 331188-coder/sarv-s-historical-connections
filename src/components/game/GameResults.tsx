@@ -1,6 +1,10 @@
+import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { GameState, DailyPuzzle, PrestigeScore } from '@/lib/gameData';
 import { SolvedRow } from './SolvedRow';
+import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 const colorBlock: Record<string, string> = {
   yellow: 'bg-cat-yellow',
@@ -17,6 +21,30 @@ interface GameResultsProps {
 
 export function GameResults({ puzzle, state, score }: GameResultsProps) {
   const won = state.solved.length === 4;
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const savedRef = useRef(false);
+
+  useEffect(() => {
+    if (!won || !user || savedRef.current) return;
+    savedRef.current = true;
+
+    supabase
+      .from('game_scores')
+      .upsert({
+        user_id: user.id,
+        subject: puzzle.subject,
+        puzzle_date: puzzle.date,
+        score: score.total,
+        mistakes: state.mistakes,
+        time_remaining: state.timeRemaining,
+        is_perfect: state.isPerfect,
+      }, { onConflict: 'user_id,subject,puzzle_date' })
+      .then(({ error }) => {
+        if (error) console.error('Failed to save score:', error);
+        else toast({ title: 'Score saved!', description: `${score.total} PP added to the leaderboard.` });
+      });
+  }, [won, user]);
 
   return (
     <motion.div
@@ -29,34 +57,28 @@ export function GameResults({ puzzle, state, score }: GameResultsProps) {
           {won ? 'Nexus Cleared' : 'Challenge Failed'}
         </h2>
         <p className="text-muted-foreground font-body text-sm">
-          Studious Sarv #{puzzle.id} -- {puzzle.period}
+          Studious Sarv #{puzzle.id} — {puzzle.period}
         </p>
       </div>
 
-      {/* Share grid */}
       {won && (
         <div className="flex flex-col items-center gap-1 mb-6">
           {puzzle.categories.map(cat => (
             <div key={cat.name} className="flex gap-1">
               {[0, 1, 2, 3].map(i => (
-                <span
-                  key={i}
-                  className={`${colorBlock[cat.color]} h-6 w-6 rounded-sm`}
-                />
+                <span key={i} className={`${colorBlock[cat.color]} h-6 w-6 rounded-sm`} />
               ))}
             </div>
           ))}
         </div>
       )}
 
-      {/* Solved categories detail */}
       <div className="flex flex-col gap-2 mb-6">
         {puzzle.categories.map((cat, i) => (
           <SolvedRow key={cat.name} category={cat} index={i} />
         ))}
       </div>
 
-      {/* Score */}
       {won && (
         <div className="bg-card border border-border rounded-lg p-5">
           <h3 className="font-display text-lg font-bold text-center text-primary mb-3">
@@ -80,6 +102,11 @@ export function GameResults({ puzzle, state, score }: GameResultsProps) {
               <span className="text-foreground">{score.streakMultiplier}x</span>
             </div>
           </div>
+          {!user && (
+            <p className="text-xs text-muted-foreground font-body text-center mt-3">
+              Sign in with Google on the Leaderboard page to save your score!
+            </p>
+          )}
         </div>
       )}
     </motion.div>

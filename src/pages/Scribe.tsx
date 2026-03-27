@@ -4,6 +4,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Loader2, Send, RotateCcw } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
+import ReactMarkdown from 'react-markdown';
 
 type Msg = { role: 'user' | 'assistant'; content: string };
 
@@ -89,6 +90,23 @@ const ScribePage = () => {
           }
         }
       }
+
+      // Flush remaining buffer
+      if (buffer.trim()) {
+        for (let raw of buffer.split('\n')) {
+          if (!raw) continue;
+          if (raw.endsWith('\r')) raw = raw.slice(0, -1);
+          if (raw.startsWith(':') || raw.trim() === '') continue;
+          if (!raw.startsWith('data: ')) continue;
+          const jsonStr = raw.slice(6).trim();
+          if (jsonStr === '[DONE]') continue;
+          try {
+            const parsed = JSON.parse(jsonStr);
+            const content = parsed.choices?.[0]?.delta?.content as string | undefined;
+            if (content) upsertAssistant(content);
+          } catch { /* ignore */ }
+        }
+      }
     } catch (e: any) {
       console.error('Scribe error:', e);
       toast({
@@ -126,7 +144,6 @@ const ScribePage = () => {
           )}
         </div>
 
-        {/* Chat area */}
         <div
           ref={scrollRef}
           className="flex-1 overflow-y-auto space-y-4 mb-4 min-h-0"
@@ -165,14 +182,15 @@ const ScribePage = () => {
                   : 'mr-auto bg-card border border-border'
               )}
             >
-              <p
-                className={cn(
-                  'text-sm font-body whitespace-pre-wrap leading-relaxed',
-                  msg.role === 'assistant' && 'text-foreground'
-                )}
-              >
-                {msg.content}
-              </p>
+              {msg.role === 'assistant' ? (
+                <div className="prose prose-sm prose-invert max-w-none font-body text-foreground">
+                  <ReactMarkdown>{msg.content}</ReactMarkdown>
+                </div>
+              ) : (
+                <p className="text-sm font-body whitespace-pre-wrap leading-relaxed">
+                  {msg.content}
+                </p>
+              )}
             </div>
           ))}
 
@@ -183,7 +201,6 @@ const ScribePage = () => {
           )}
         </div>
 
-        {/* Input */}
         <div className="flex gap-2 items-end">
           <Textarea
             value={input}
