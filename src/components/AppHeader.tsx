@@ -1,5 +1,8 @@
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/hooks/useAuth';
+import { Button } from '@/components/ui/button';
+import { LogOut } from 'lucide-react';
 import logo from '@/assets/logo.png';
 
 const navItems = [
@@ -12,6 +15,7 @@ const navItems = [
 
 export function AppHeader() {
   const location = useLocation();
+  const { user, signOut } = useAuth();
 
   return (
     <header className="border-b border-border bg-background/80 backdrop-blur-md sticky top-0 z-50">
@@ -22,22 +26,29 @@ export function AppHeader() {
             Studious Sarv
           </span>
         </Link>
-        <nav className="hidden md:flex items-center gap-1">
-          {navItems.map(item => (
-            <Link
-              key={item.path}
-              to={item.path}
-              className={cn(
-                'px-3 py-1.5 rounded-md text-sm font-body font-medium transition-colors',
-                location.pathname === item.path
-                  ? 'text-primary bg-primary/10'
-                  : 'text-muted-foreground hover:text-foreground'
-              )}
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
+        <div className="hidden md:flex items-center gap-1">
+          <nav className="flex items-center gap-1">
+            {navItems.map(item => (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={cn(
+                  'px-3 py-1.5 rounded-md text-sm font-body font-medium transition-colors',
+                  location.pathname === item.path
+                    ? 'text-primary bg-primary/10'
+                    : 'text-muted-foreground hover:text-foreground'
+                )}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+          {user && (
+            <Button variant="ghost" size="sm" onClick={signOut} className="ml-2 text-muted-foreground">
+              <LogOut className="h-4 w-4" />
+            </Button>
+          )}
+        </div>
       </div>
     </header>
   );

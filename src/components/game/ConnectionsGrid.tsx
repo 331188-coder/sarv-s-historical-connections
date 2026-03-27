@@ -32,7 +32,7 @@ export function ConnectionsGrid({ puzzle }: ConnectionsGridProps) {
         </h2>
         <p className="text-muted-foreground text-center max-w-md font-body">
           Group the 16 terms into four hidden thematic categories.
-          You have 4 mistakes and 2 minutes.
+          You have 4 mistakes and 3 minutes.
         </p>
         <Button onClick={startGame} size="lg" className="font-body font-semibold">
           Start Challenge
@@ -67,7 +67,6 @@ export function ConnectionsGrid({ puzzle }: ConnectionsGridProps) {
 
   return (
     <div className="w-full max-w-xl mx-auto">
-      {/* Header stats */}
       <div className="flex items-center justify-between mb-4 px-1">
         <div className="flex items-center gap-1.5">{mistakeDots}</div>
         <span className="font-body text-sm text-muted-foreground tabular-nums">
@@ -75,14 +74,12 @@ export function ConnectionsGrid({ puzzle }: ConnectionsGridProps) {
         </span>
       </div>
 
-      {/* Solved rows */}
       <div className="flex flex-col gap-2 mb-2">
         {state.solved.map((cat, i) => (
           <SolvedRow key={cat.name} category={cat} index={i} />
         ))}
       </div>
 
-      {/* Grid */}
       <div className="grid grid-cols-4 gap-2">
         {shuffledTerms.map(term => (
           <GameTile
@@ -95,7 +92,6 @@ export function ConnectionsGrid({ puzzle }: ConnectionsGridProps) {
         ))}
       </div>
 
-      {/* Controls */}
       <div className="flex items-center justify-center gap-3 mt-5">
         <Button variant="outline" size="sm" onClick={shuffleGrid} className="font-body">
           <Shuffle className="h-4 w-4 mr-1.5" />
