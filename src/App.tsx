@@ -10,6 +10,8 @@ import Notes from "./pages/Notes.tsx";
 import Questions from "./pages/Questions.tsx";
 import Scribe from "./pages/Scribe.tsx";
 import Leaderboard from "./pages/Leaderboard.tsx";
+import Profile from "./pages/Profile.tsx";
+import Talon from "./pages/Talon.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -24,10 +26,12 @@ const App = () => (
           <AppHeader />
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/talon" element={<Talon />} />
             <Route path="/notes" element={<Notes />} />
             <Route path="/questions" element={<Questions />} />
             <Route path="/scribe" element={<Scribe />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
+            <Route path="/profile" element={<Profile />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

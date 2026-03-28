@@ -133,7 +133,7 @@ const ScribePage = () => {
               Scribe
             </h1>
             <p className="text-muted-foreground font-body text-sm">
-              AI thesis grading based on AP rubrics. Paste your thesis statement to get feedback.
+              AI essay grading based on AP rubrics. Paste your DBQ, LEQ, or SAQ for detailed feedback.
             </p>
           </div>
           {messages.length > 0 && (
@@ -152,21 +152,20 @@ const ScribePage = () => {
           {messages.length === 0 && (
             <div className="text-center py-16">
               <h2 className="font-display text-xl font-semibold text-foreground mb-2">
-                Submit a thesis for grading
+                Submit an Essay for Grading
               </h2>
               <p className="text-muted-foreground font-body text-sm max-w-md mx-auto mb-6">
-                Paste an AP History thesis statement (DBQ, LEQ, or SAQ) and receive detailed feedback
-                scored on the official College Board rubric: Claim, Contextualization, Evidence, and
-                Analysis and Reasoning.
+                Paste your full AP History essay (DBQ, LEQ, or SAQ) and receive detailed feedback
+                scored on the official College Board rubric. Scribe evaluates Thesis, Contextualization,
+                Evidence, Analysis &amp; Reasoning, and Complex Understanding.
               </p>
               <div className="bg-card border border-border rounded-lg p-4 max-w-lg mx-auto text-left">
                 <p className="text-xs text-muted-foreground font-body mb-1.5 uppercase tracking-wider font-semibold">
-                  Example prompt
+                  What to paste
                 </p>
-                <p className="text-sm text-foreground font-body italic">
-                  "Although the American Revolution resulted in political independence from Britain,
-                  it failed to bring about significant social change for women, enslaved people, and
-                  Native Americans in the period 1775 to 1800."
+                <p className="text-sm text-foreground font-body">
+                  Your complete essay response — include your thesis, body paragraphs, evidence, and analysis.
+                  Scribe will grade each rubric criterion and provide specific, actionable feedback.
                 </p>
               </div>
             </div>
@@ -211,7 +210,7 @@ const ScribePage = () => {
                 send();
               }
             }}
-            placeholder="Paste your thesis statement here..."
+            placeholder="Paste your essay here (DBQ, LEQ, or SAQ)..."
             className="min-h-[3rem] max-h-32 resize-none font-body text-sm"
             disabled={isLoading}
           />

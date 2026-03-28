@@ -1,12 +1,12 @@
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
-import { Button } from '@/components/ui/button';
-import { LogOut } from 'lucide-react';
+import { User } from 'lucide-react';
 import logo from '@/assets/logo.png';
 
 const navItems = [
   { label: 'Nexus', path: '/' },
+  { label: 'Talon', path: '/talon' },
   { label: 'Notes', path: '/notes' },
   { label: 'Questions', path: '/questions' },
   { label: 'Scribe', path: '/scribe' },
@@ -15,7 +15,7 @@ const navItems = [
 
 export function AppHeader() {
   const location = useLocation();
-  const { user, signOut } = useAuth();
+  const { user } = useAuth();
 
   return (
     <header className="border-b border-border bg-background/80 backdrop-blur-md sticky top-0 z-50">
@@ -43,11 +43,24 @@ export function AppHeader() {
               </Link>
             ))}
           </nav>
-          {user && (
-            <Button variant="ghost" size="sm" onClick={signOut} className="ml-2 text-muted-foreground">
-              <LogOut className="h-4 w-4" />
-            </Button>
-          )}
+          <Link
+            to="/profile"
+            className={cn(
+              'ml-2 p-1.5 rounded-full transition-colors',
+              location.pathname === '/profile' ? 'bg-primary/10' : 'hover:bg-secondary'
+            )}
+          >
+            {user ? (
+              <img
+                src={user.user_metadata?.avatar_url}
+                alt=""
+                className="h-7 w-7 rounded-full object-cover"
+                onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+              />
+            ) : (
+              <User className="h-5 w-5 text-muted-foreground" />
+            )}
+          </Link>
         </div>
       </div>
     </header>
