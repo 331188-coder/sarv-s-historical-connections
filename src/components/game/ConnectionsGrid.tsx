@@ -1,16 +1,19 @@
+import { useState } from 'react';
 import { useConnectionsGame } from '@/hooks/useConnectionsGame';
 import { DailyPuzzle } from '@/lib/gameData';
 import { GameTile } from './GameTile';
 import { SolvedRow } from './SolvedRow';
 import { GameResults } from './GameResults';
+import { WinAnimation } from './WinAnimation';
 import { Button } from '@/components/ui/button';
 import { Shuffle } from 'lucide-react';
 
 interface ConnectionsGridProps {
   puzzle: DailyPuzzle;
+  onComplete?: () => void;
 }
 
-export function ConnectionsGrid({ puzzle }: ConnectionsGridProps) {
+export function ConnectionsGrid({ puzzle, onComplete }: ConnectionsGridProps) {
   const {
     state,
     shuffledTerms,
@@ -23,6 +26,36 @@ export function ConnectionsGrid({ puzzle }: ConnectionsGridProps) {
     shuffleGrid,
     calculateScore,
   } = useConnectionsGame(puzzle);
+
+  const [showWinAnimation, setShowWinAnimation] = useState(false);
+  const [showResults, setShowResults] = useState(false);
+
+  // Detect game complete
+  if (state.isComplete && !showResults && !showWinAnimation) {
+    const won = state.solved.length === 4;
+    if (won && state.isPerfect) {
+      // Trigger win animation for perfect clears
+      setTimeout(() => setShowWinAnimation(true), 300);
+    } else {
+      setTimeout(() => {
+        setShowResults(true);
+        onComplete?.();
+      }, 300);
+    }
+  }
+
+  if (showWinAnimation) {
+    return (
+      <WinAnimation
+        subject={puzzle.subject}
+        onComplete={() => {
+          setShowWinAnimation(false);
+          setShowResults(true);
+          onComplete?.();
+        }}
+      />
+    );
+  }
 
   if (!isStarted) {
     return (
@@ -41,7 +74,7 @@ export function ConnectionsGrid({ puzzle }: ConnectionsGridProps) {
     );
   }
 
-  if (state.isComplete) {
+  if (showResults) {
     return (
       <GameResults
         puzzle={puzzle}
