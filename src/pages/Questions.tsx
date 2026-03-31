@@ -15,6 +15,8 @@ interface Question {
   theme: string;
 }
 
+const QUESTION_SET_SIZE = 12;
+
 const QuestionsPage = () => {
   const [subject, setSubject] = useState<'apush' | 'apworld'>('apush');
   const [selectedPeriod, setSelectedPeriod] = useState<string | null>(null);
@@ -40,8 +42,19 @@ const QuestionsPage = () => {
     setQuizComplete(false);
 
     try {
+      const periodContext = periods.find((period) => `${period.name}: ${period.years}` === periodName);
       const { data, error } = await supabase.functions.invoke('generate-questions', {
-        body: { subject, period: periodName },
+        body: {
+          subject,
+          period: periodName,
+          count: QUESTION_SET_SIZE,
+          context: periodContext
+            ? {
+                keyTopics: periodContext.keyTopics,
+                chapters: periodContext.chapters.map((chapter) => chapter.title),
+              }
+            : undefined,
+        },
       });
 
       if (error) throw error;
@@ -50,11 +63,10 @@ const QuestionsPage = () => {
       } else {
         throw new Error('No questions returned');
       }
-    } catch (e: any) {
-      console.error('Error generating questions:', e);
+    } catch (error: any) {
       toast({
         title: 'Error',
-        description: e?.message || 'Failed to generate questions. Try again.',
+        description: error?.message || 'Failed to generate questions. Try again.',
         variant: 'destructive',
       });
       setSelectedPeriod(null);
@@ -68,18 +80,19 @@ const QuestionsPage = () => {
     setSelectedAnswer(index);
     setAnswered(true);
     if (index === questions[currentQ].correct) {
-      setScore(s => s + 1);
+      setScore((value) => value + 1);
     }
   };
 
   const nextQuestion = () => {
     if (currentQ + 1 >= questions.length) {
       setQuizComplete(true);
-    } else {
-      setCurrentQ(c => c + 1);
-      setSelectedAnswer(null);
-      setAnswered(false);
+      return;
     }
+
+    setCurrentQ((value) => value + 1);
+    setSelectedAnswer(null);
+    setAnswered(false);
   };
 
   const resetQuiz = () => {
@@ -92,53 +105,54 @@ const QuestionsPage = () => {
     setQuizComplete(false);
   };
 
-  // Period selection view
   if (!selectedPeriod) {
     return (
       <div className="min-h-[calc(100vh-3.5rem)]">
         <div className="container max-w-5xl mx-auto px-4 py-8">
-          <h1 className="font-display text-3xl font-bold text-foreground tracking-tight">
-            Questions
-          </h1>
+          <h1 className="font-display text-3xl font-bold text-foreground tracking-tight">Questions</h1>
           <p className="text-muted-foreground font-body mt-1 text-sm mb-4">
-            AI-generated AP-style multiple choice questions. Select a period to begin.
+            Practice with deeper AP-style sets built around each period’s key topics and chapter coverage.
           </p>
 
           <div className="inline-flex items-center bg-secondary rounded-lg p-0.5 mb-6">
-            {(['apush', 'apworld'] as const).map(s => (
+            {(['apush', 'apworld'] as const).map((value) => (
               <button
-                key={s}
-                onClick={() => setSubject(s)}
+                key={value}
+                onClick={() => setSubject(value)}
                 className={cn(
                   'px-4 py-1.5 rounded-md text-sm font-body font-medium transition-all',
-                  subject === s
-                    ? 'bg-primary text-primary-foreground'
-                    : 'text-muted-foreground hover:text-foreground'
+                  subject === value ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground'
                 )}
               >
-                {s === 'apush' ? 'APUSH' : 'AP World'}
+                {value === 'apush' ? 'APUSH' : 'AP World'}
               </button>
             ))}
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {periods.map(p => (
+            {periods.map((period) => (
               <button
-                key={`${subject}-${p.id}`}
-                onClick={() => generateQuestions(`${p.name}: ${p.years}`)}
+                key={`${subject}-${period.id}`}
+                onClick={() => generateQuestions(`${period.name}: ${period.years}`)}
                 className="bg-card border border-border rounded-lg p-4 text-left hover:border-primary/50 hover:bg-secondary/30 transition-all group"
               >
                 <h3 className="font-display text-base font-semibold text-foreground group-hover:text-primary transition-colors">
-                  {p.name}
+                  {period.name}
                 </h3>
-                <p className="text-xs text-muted-foreground font-body mt-0.5">{p.years}</p>
+                <p className="text-xs text-muted-foreground font-body mt-0.5">{period.years}</p>
                 <div className="flex gap-1 mt-2 flex-wrap">
-                  {p.themes.slice(0, 3).map(t => (
-                    <Badge key={t} variant="secondary" className="text-xs font-body">
-                      {t}
+                  {period.themes.slice(0, 3).map((theme) => (
+                    <Badge key={theme} variant="secondary" className="text-xs font-body">
+                      {theme}
                     </Badge>
                   ))}
                 </div>
+                <p className="mt-3 text-sm font-body leading-relaxed text-muted-foreground">
+                  {period.keyTopics.slice(0, 2).join(' • ')}
+                </p>
+                <p className="mt-3 text-[11px] font-body font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+                  {QUESTION_SET_SIZE} questions per set
+                </p>
               </button>
             ))}
           </div>
@@ -147,39 +161,33 @@ const QuestionsPage = () => {
     );
   }
 
-  // Loading
   if (loading) {
     return (
       <div className="min-h-[calc(100vh-3.5rem)] flex items-center justify-center">
         <div className="text-center">
           <Loader2 className="h-8 w-8 animate-spin text-primary mx-auto mb-3" />
           <p className="text-muted-foreground font-body text-sm">
-            Generating questions for {selectedPeriod}...
+            Generating {QUESTION_SET_SIZE} questions for {selectedPeriod}...
           </p>
         </div>
       </div>
     );
   }
 
-  // Quiz complete
   if (quizComplete) {
     return (
       <div className="min-h-[calc(100vh-3.5rem)]">
         <div className="container max-w-2xl mx-auto px-4 py-12 text-center">
-          <h2 className="font-display text-2xl font-bold text-foreground mb-2">
-            Quiz Complete
-          </h2>
+          <h2 className="font-display text-2xl font-bold text-foreground mb-2">Quiz Complete</h2>
           <p className="text-muted-foreground font-body mb-1">{selectedPeriod}</p>
           <div className="my-8">
-            <span className="font-display text-5xl font-bold text-primary">
-              {score}/{questions.length}
-            </span>
+            <span className="font-display text-5xl font-bold text-primary">{score}/{questions.length}</span>
             <p className="text-muted-foreground font-body mt-2 text-sm">
               {score === questions.length
                 ? 'Perfect score. You are ready for the exam.'
-                : score >= questions.length * 0.6
-                ? 'Solid work. Review the explanations for missed questions.'
-                : 'Keep studying. Review the period notes and try again.'}
+                : score >= questions.length * 0.7
+                  ? 'Strong work. Review the explanations for the few you missed.'
+                  : 'Review the notes for this period and try another set.'}
             </p>
           </div>
           <div className="flex gap-3 justify-center">
@@ -187,7 +195,7 @@ const QuestionsPage = () => {
               Choose Another Period
             </Button>
             <Button onClick={() => generateQuestions(selectedPeriod)} className="font-body">
-              Try Again
+              Generate a New Set
             </Button>
           </div>
         </div>
@@ -195,14 +203,12 @@ const QuestionsPage = () => {
     );
   }
 
-  // Active question
-  const q = questions[currentQ];
-  if (!q) return null;
+  const question = questions[currentQ];
+  if (!question) return null;
 
   return (
     <div className="min-h-[calc(100vh-3.5rem)]">
       <div className="container max-w-2xl mx-auto px-4 py-8">
-        {/* Progress bar */}
         <div className="flex items-center justify-between mb-6">
           <button onClick={resetQuiz} className="text-sm text-muted-foreground hover:text-foreground font-body transition-colors">
             Exit
@@ -211,63 +217,49 @@ const QuestionsPage = () => {
             <span className="text-sm text-muted-foreground font-body">
               {currentQ + 1} / {questions.length}
             </span>
-            <Badge variant="secondary" className="text-xs font-body">{q.theme}</Badge>
+            <Badge variant="secondary" className="text-xs font-body">{question.theme}</Badge>
           </div>
         </div>
 
         <div className="w-full bg-secondary rounded-full h-1 mb-8">
-          <div
-            className="bg-primary h-1 rounded-full transition-all"
-            style={{ width: `${((currentQ + 1) / questions.length) * 100}%` }}
-          />
+          <div className="bg-primary h-1 rounded-full transition-all" style={{ width: `${((currentQ + 1) / questions.length) * 100}%` }} />
         </div>
 
-        {/* Question */}
         <div className="mb-6">
-          <h2 className="font-body text-base text-foreground leading-relaxed">
-            {q.question}
-          </h2>
+          <h2 className="font-body text-base text-foreground leading-relaxed">{question.question}</h2>
         </div>
 
-        {/* Options */}
         <div className="space-y-2.5 mb-6">
-          {q.options.map((opt, i) => {
-            const letter = String.fromCharCode(65 + i);
-            const isCorrect = i === q.correct;
-            const isSelected = i === selectedAnswer;
+          {question.options.map((option, index) => {
+            const letter = String.fromCharCode(65 + index);
+            const isCorrect = index === question.correct;
+            const isSelected = index === selectedAnswer;
 
             return (
               <button
-                key={i}
-                onClick={() => handleAnswer(i)}
+                key={index}
+                onClick={() => handleAnswer(index)}
                 disabled={answered}
                 className={cn(
                   'w-full text-left px-4 py-3 rounded-lg border font-body text-sm transition-all',
                   !answered && 'border-border hover:border-primary/50 hover:bg-secondary/30',
                   answered && isCorrect && 'border-cat-green bg-cat-green/10 text-foreground',
                   answered && isSelected && !isCorrect && 'border-destructive bg-destructive/10 text-foreground',
-                  answered && !isSelected && !isCorrect && 'border-border opacity-50',
+                  answered && !isSelected && !isCorrect && 'border-border opacity-50'
                 )}
               >
                 <span className="font-medium mr-2">{letter}.</span>
-                {opt}
-                {answered && isCorrect && (
-                  <CheckCircle2 className="inline h-4 w-4 ml-2 text-cat-green" />
-                )}
-                {answered && isSelected && !isCorrect && (
-                  <XCircle className="inline h-4 w-4 ml-2 text-destructive" />
-                )}
+                {option}
+                {answered && isCorrect && <CheckCircle2 className="inline h-4 w-4 ml-2 text-cat-green" />}
+                {answered && isSelected && !isCorrect && <XCircle className="inline h-4 w-4 ml-2 text-destructive" />}
               </button>
             );
           })}
         </div>
 
-        {/* Explanation */}
         {answered && (
           <div className="bg-secondary/50 border border-border rounded-lg p-4 mb-6">
-            <p className="text-sm font-body text-muted-foreground">
-              {q.explanation}
-            </p>
+            <p className="text-sm font-body text-muted-foreground">{question.explanation}</p>
           </div>
         )}
 

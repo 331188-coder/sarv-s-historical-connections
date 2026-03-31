@@ -1,23 +1,35 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, PanInfo } from 'framer-motion';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { AnimatePresence, motion, PanInfo } from 'framer-motion';
+import { BookOpen, Briefcase, Church, Cpu, Landmark, Users } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { getDailyTalonCards, SPRITE_CATEGORIES, SpriteCategory, TalonCard } from '@/lib/talonData';
+import {
+  getDailyTalonCards,
+  SPRITE_CATEGORIES,
+  SpriteCategory,
+  SpriteIconKey,
+  TalonCard,
+} from '@/lib/talonData';
 import { WinAnimation } from '@/components/game/WinAnimation';
-import { useAuth } from '@/hooks/useAuth';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
 
-const HEX_SEGMENTS: { name: SpriteCategory; angle: number; color: string; icon: string }[] = SPRITE_CATEGORIES.map((c, i) => ({
-  ...c,
-  angle: i * 60 - 90, // Start from top
-}));
+function SpriteIcon({ icon }: { icon: SpriteIconKey }) {
+  const className = 'h-4 w-4';
 
-function getSegmentFromAngle(angleDeg: number): SpriteCategory {
-  // Normalize to 0-360
-  let a = ((angleDeg % 360) + 360) % 360;
-  const idx = Math.floor((a + 30) / 60) % 6;
-  const order: SpriteCategory[] = ['Social', 'Political', 'Religious', 'Intellectual', 'Technological', 'Economic'];
-  return order[idx];
+  switch (icon) {
+    case 'social':
+      return <Users className={className} />;
+    case 'political':
+      return <Landmark className={className} />;
+    case 'religious':
+      return <Church className={className} />;
+    case 'intellectual':
+      return <BookOpen className={className} />;
+    case 'technological':
+      return <Cpu className={className} />;
+    case 'economic':
+      return <Briefcase className={className} />;
+    default:
+      return <BookOpen className={className} />;
+  }
 }
 
 const TalonPage = () => {
@@ -35,8 +47,13 @@ const TalonPage = () => {
   const [cardStartTime, setCardStartTime] = useState(0);
   const [totalCorrect, setTotalCorrect] = useState(0);
   const [hoveredSegment, setHoveredSegment] = useState<SpriteCategory | null>(null);
-  const { user } = useAuth();
-  const { toast } = useToast();
+  const [activeSegment, setActiveSegment] = useState<SpriteCategory | null>(null);
+  const [hexRadius, setHexRadius] = useState(148);
+
+  const segments = useMemo(
+    () => SPRITE_CATEGORIES.map((category, index) => ({ ...category, angle: index * 60 - 90 })),
+    []
+  );
 
   useEffect(() => {
     setCards(getDailyTalonCards(subject));
@@ -48,76 +65,125 @@ const TalonPage = () => {
     setIsStarted(false);
     setIsComplete(false);
     setIsPerfect(true);
+    setShowWinAnimation(false);
     setTotalCorrect(0);
+    setActiveSegment(null);
   }, [subject]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setHexRadius(window.innerWidth < 640 ? 106 : 148);
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const currentCard = cards[currentIndex];
+
+  const getClosestCategory = useCallback(
+    (angleDeg: number) => {
+      const normalized = ((angleDeg % 360) + 360) % 360;
+
+      return segments.reduce(
+        (closest, segment) => {
+          const segmentAngle = ((segment.angle % 360) + 360) % 360;
+          const rawDiff = Math.abs(segmentAngle - normalized);
+          const diff = Math.min(rawDiff, 360 - rawDiff);
+
+          return diff < closest.diff ? { name: segment.name, diff } : closest;
+        },
+        { name: segments[0].name, diff: Number.POSITIVE_INFINITY }
+      ).name;
+    },
+    [segments]
+  );
+
+  const getCategoryFromOffset = useCallback(
+    (x: number, y: number) => {
+      const angle = Math.atan2(y, x) * (180 / Math.PI);
+      return getClosestCategory(angle);
+    },
+    [getClosestCategory]
+  );
 
   const startGame = () => {
     setIsStarted(true);
     setCardStartTime(Date.now());
   };
 
-  const currentCard = cards[currentIndex];
+  const handleCategorize = useCallback(
+    (category: SpriteCategory) => {
+      if (!currentCard || showExplanation) return;
 
-  const handleCategorize = useCallback((category: SpriteCategory) => {
-    if (!currentCard || showExplanation) return;
+      const elapsed = (Date.now() - cardStartTime) / 1000;
+      const isCorrect = category === currentCard.category;
 
-    const elapsed = (Date.now() - cardStartTime) / 1000;
-    const isCorrect = category === currentCard.category;
+      if (isCorrect) {
+        let points = 100;
+        if (elapsed < 5) points += Math.round((5 - elapsed) * 20);
 
-    if (isCorrect) {
-      let points = 100;
-      // Instant Kill bonus (under 5 seconds)
-      if (elapsed < 5) points += Math.round((5 - elapsed) * 20);
-      // Streak multiplier
-      const newStreak = streak + 1;
-      const newMult = Math.min(2, 1 + newStreak * 0.1);
-      points = Math.round(points * newMult);
+        const newStreak = streak + 1;
+        const newMultiplier = Math.min(2, 1 + newStreak * 0.1);
+        points = Math.round(points * newMultiplier);
 
-      setScore(s => s + points);
-      setStreak(newStreak);
-      setMultiplier(newMult);
-      setTotalCorrect(c => c + 1);
+        setScore((value) => value + points);
+        setStreak(newStreak);
+        setMultiplier(newMultiplier);
+        setTotalCorrect((value) => value + 1);
 
-      // Flash feedback
-      toast({ title: `+${points} PP`, description: elapsed < 5 ? '⚡ Instant Kill!' : 'Correct!' });
-
-      // Next card
-      if (currentIndex + 1 >= cards.length) {
-        setIsComplete(true);
-        if (isPerfect) setShowWinAnimation(true);
+        if (currentIndex + 1 >= cards.length) {
+          setIsComplete(true);
+          if (isPerfect) setShowWinAnimation(true);
+        } else {
+          setCurrentIndex((value) => value + 1);
+          setCardStartTime(Date.now());
+        }
       } else {
-        setCurrentIndex(i => i + 1);
-        setCardStartTime(Date.now());
+        setStreak(0);
+        setMultiplier(1);
+        setIsPerfect(false);
+        setShowExplanation(currentCard.explanation);
       }
-    } else {
-      setStreak(0);
-      setMultiplier(1);
-      setIsPerfect(false);
-      setShowExplanation(currentCard.explanation);
-    }
-  }, [currentCard, cardStartTime, streak, currentIndex, cards.length, isPerfect, showExplanation, toast]);
+    },
+    [cardStartTime, cards.length, currentCard, currentIndex, isPerfect, showExplanation, streak]
+  );
 
-  const handleDragEnd = useCallback((_: any, info: PanInfo) => {
-    const { offset } = info;
-    const dist = Math.sqrt(offset.x ** 2 + offset.y ** 2);
-    if (dist < 80) return; // Not dragged far enough
+  const handleDrag = useCallback(
+    (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+      const distance = Math.hypot(info.offset.x, info.offset.y);
+      if (distance < 36) {
+        setActiveSegment(null);
+        return;
+      }
 
-    const angle = Math.atan2(offset.y, offset.x) * (180 / Math.PI);
-    // Map angle to SPRITE category
-    // 0° = right, -90° = up, 90° = down, 180° = left
-    const normalizedAngle = ((angle + 360) % 360);
-    const category = getSegmentFromAngle(normalizedAngle);
-    handleCategorize(category);
-  }, [handleCategorize]);
+      setActiveSegment(getCategoryFromOffset(info.offset.x, info.offset.y));
+    },
+    [getCategoryFromOffset]
+  );
+
+  const handleDragEnd = useCallback(
+    (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+      setActiveSegment(null);
+      const distance = Math.hypot(info.offset.x, info.offset.y);
+      if (distance < 56) return;
+
+      const category = getCategoryFromOffset(info.offset.x, info.offset.y);
+      handleCategorize(category);
+    },
+    [getCategoryFromOffset, handleCategorize]
+  );
 
   const confirmExplanation = () => {
     setShowExplanation(null);
     if (currentIndex + 1 >= cards.length) {
       setIsComplete(true);
-    } else {
-      setCurrentIndex(i => i + 1);
-      setCardStartTime(Date.now());
+      return;
     }
+
+    setCurrentIndex((value) => value + 1);
+    setCardStartTime(Date.now());
   };
 
   if (showWinAnimation) {
@@ -127,45 +193,49 @@ const TalonPage = () => {
   if (!isStarted) {
     return (
       <div className="min-h-[calc(100vh-3.5rem)]">
-        <div className="container max-w-3xl mx-auto px-4 py-8">
+        <div className="container max-w-4xl mx-auto px-4 py-8">
           <div className="text-center">
             <h1 className="font-display text-3xl md:text-4xl font-bold text-foreground tracking-tight mb-2">
               The Talon
             </h1>
             <p className="text-muted-foreground font-body text-sm mb-4">
-              High-Speed SPRITE Analysis — Categorize historical events into the correct theme
+              SPRITE analysis drill for rapid, accurate historical categorization.
             </p>
 
             <div className="inline-flex items-center bg-secondary rounded-lg p-0.5 mb-6">
-              {(['apush', 'apworld'] as const).map(s => (
+              {(['apush', 'apworld'] as const).map((value) => (
                 <button
-                  key={s}
-                  onClick={() => setSubject(s)}
+                  key={value}
+                  onClick={() => setSubject(value)}
                   className={cn(
                     'px-4 py-1.5 rounded-md text-sm font-body font-medium transition-all',
-                    subject === s ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground'
+                    subject === value ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground'
                   )}
                 >
-                  {s === 'apush' ? 'APUSH' : 'AP World'}
+                  {value === 'apush' ? 'APUSH' : 'AP World'}
                 </button>
               ))}
             </div>
 
-            <div className="bg-card border border-border rounded-lg p-6 max-w-lg mx-auto mb-6 text-left">
+            <div className="bg-card border border-border rounded-2xl p-6 max-w-2xl mx-auto mb-6 text-left shadow-sm">
               <h3 className="font-display text-lg font-semibold text-foreground mb-3">How to Play</h3>
               <ul className="space-y-2 text-sm font-body text-muted-foreground">
-                <li className="flex gap-2"><span className="text-primary">•</span>A historical event card appears in the center</li>
-                <li className="flex gap-2"><span className="text-primary">•</span>Drag or click to categorize it: <strong className="text-foreground">S-P-R-I-T-E</strong></li>
-                <li className="flex gap-2"><span className="text-primary">•</span>Correct = <strong className="text-foreground">100 PP</strong>. Under 5s = speed bonus</li>
-                <li className="flex gap-2"><span className="text-primary">•</span>Streaks build a multiplier up to <strong className="text-foreground">2.0x Apex</strong></li>
-                <li className="flex gap-2"><span className="text-primary">•</span>Wrong answer resets streak and shows an explanation</li>
+                <li className="flex gap-3"><span className="text-primary font-semibold">01</span><span>A historical event appears in the center of the board.</span></li>
+                <li className="flex gap-3"><span className="text-primary font-semibold">02</span><span>Drag the card toward a SPRITE zone or select a category panel.</span></li>
+                <li className="flex gap-3"><span className="text-primary font-semibold">03</span><span>Each correct answer earns <strong className="text-foreground">100 PP</strong>, with an added speed bonus under five seconds.</span></li>
+                <li className="flex gap-3"><span className="text-primary font-semibold">04</span><span>Your streak raises the multiplier up to <strong className="text-foreground">2.0x</strong>.</span></li>
+                <li className="flex gap-3"><span className="text-primary font-semibold">05</span><span>If you miss, the round pauses for a brief explanation before continuing.</span></li>
               </ul>
             </div>
 
             <div className="flex flex-wrap justify-center gap-2 mb-6">
-              {SPRITE_CATEGORIES.map(c => (
-                <span key={c.name} className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-secondary text-xs font-body font-medium text-foreground">
-                  {c.icon} {c.name}
+              {SPRITE_CATEGORIES.map((category) => (
+                <span
+                  key={category.name}
+                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-secondary text-xs font-body font-medium text-foreground"
+                >
+                  <SpriteIcon icon={category.icon} />
+                  {category.name}
                 </span>
               ))}
             </div>
@@ -174,7 +244,7 @@ const TalonPage = () => {
               onClick={startGame}
               className="px-8 py-3 rounded-lg bg-primary text-primary-foreground font-body font-semibold text-lg hover:opacity-90 transition-opacity"
             >
-              Begin Hunt
+              Start Round
             </button>
           </div>
         </div>
@@ -186,18 +256,21 @@ const TalonPage = () => {
     return (
       <div className="min-h-[calc(100vh-3.5rem)]">
         <div className="container max-w-2xl mx-auto px-4 py-12 text-center">
-          <h2 className="font-display text-2xl font-bold text-foreground mb-2">Hunt Complete</h2>
-          <p className="text-muted-foreground font-body mb-6">{subject === 'apush' ? 'APUSH' : 'AP World'} SPRITE Analysis</p>
+          <h2 className="font-display text-2xl font-bold text-foreground mb-2">Round Complete</h2>
+          <p className="text-muted-foreground font-body mb-6">{subject === 'apush' ? 'APUSH' : 'AP World'} SPRITE analysis</p>
 
           <div className="my-8">
             <span className="font-display text-5xl font-bold text-primary">{score} PP</span>
             <p className="text-muted-foreground font-body mt-2 text-sm">
-              {totalCorrect}/{cards.length} correct {isPerfect && '— Perfect Run!'}
+              {totalCorrect}/{cards.length} correct {isPerfect && '— Perfect run'}
             </p>
           </div>
 
           <button
-            onClick={() => { setIsStarted(false); setCards(getDailyTalonCards(subject)); }}
+            onClick={() => {
+              setIsStarted(false);
+              setCards(getDailyTalonCards(subject));
+            }}
             className="px-6 py-2.5 rounded-lg bg-primary text-primary-foreground font-body font-semibold hover:opacity-90 transition-opacity"
           >
             Play Again
@@ -207,91 +280,102 @@ const TalonPage = () => {
     );
   }
 
-  // Active game - Hexagonal HUD
-  const hexRadius = 160;
+  if (!currentCard) return null;
 
   return (
     <div className="min-h-[calc(100vh-3.5rem)] flex flex-col items-center">
       <div className="container max-w-3xl mx-auto px-4 py-4">
-        {/* Stats bar */}
-        <div className="flex items-center justify-between mb-4 px-2">
-          <div className="flex items-center gap-4">
-            <span className="font-display text-lg font-bold text-primary">{score} PP</span>
-            <span className="text-sm font-body text-muted-foreground">
-              {currentIndex + 1}/{cards.length}
-            </span>
+        <div className="grid gap-3 md:grid-cols-3 mb-5">
+          <div className="rounded-2xl border border-border bg-card px-4 py-3">
+            <p className="text-[11px] font-body font-semibold uppercase tracking-[0.2em] text-muted-foreground">Score</p>
+            <p className="mt-1 font-display text-2xl font-bold text-primary">{score} PP</p>
           </div>
-          <div className="flex items-center gap-3">
-            <span className={cn(
-              'text-sm font-body font-semibold',
-              multiplier >= 2 ? 'text-cat-yellow' : streak > 0 ? 'text-primary' : 'text-muted-foreground'
-            )}>
-              {multiplier >= 2 ? '🦅 APEX' : `${multiplier.toFixed(1)}x`}
-            </span>
-            <span className="text-sm font-body text-muted-foreground">
-              🔥 {streak}
-            </span>
+          <div className="rounded-2xl border border-border bg-card px-4 py-3">
+            <p className="text-[11px] font-body font-semibold uppercase tracking-[0.2em] text-muted-foreground">Progress</p>
+            <p className="mt-1 font-display text-2xl font-bold text-foreground">
+              {currentIndex + 1}<span className="text-base text-muted-foreground">/{cards.length}</span>
+            </p>
+          </div>
+          <div className="rounded-2xl border border-border bg-card px-4 py-3">
+            <p className="text-[11px] font-body font-semibold uppercase tracking-[0.2em] text-muted-foreground">Streak</p>
+            <div className="mt-1 flex items-baseline gap-3">
+              <p className="font-display text-2xl font-bold text-foreground">{streak}</p>
+              <span className={cn('text-sm font-body font-semibold', streak > 0 ? 'text-primary' : 'text-muted-foreground')}>
+                {multiplier.toFixed(1)}x multiplier
+              </span>
+            </div>
           </div>
         </div>
 
-        {/* Hexagonal HUD */}
-        <div className="relative flex items-center justify-center" style={{ height: hexRadius * 2 + 120 }}>
-          {/* Category segments */}
-          {HEX_SEGMENTS.map((seg, i) => {
-            const rad = (seg.angle * Math.PI) / 180;
-            const x = Math.cos(rad) * (hexRadius + 40);
-            const y = Math.sin(rad) * (hexRadius + 40);
+        <div className="mb-4 text-center">
+          <p className="text-sm font-body text-muted-foreground">
+            Drag the card toward a zone or use the category panels around the board.
+          </p>
+        </div>
+
+        <div className="relative flex items-center justify-center" style={{ height: hexRadius * 2 + 136 }}>
+          {segments.map((segment) => {
+            const radians = (segment.angle * Math.PI) / 180;
+            const x = Math.cos(radians) * (hexRadius + 40);
+            const y = Math.sin(radians) * (hexRadius + 40);
+            const isHighlighted = hoveredSegment === segment.name || activeSegment === segment.name;
+
             return (
               <motion.button
-                key={seg.name}
+                key={segment.name}
                 className={cn(
-                  'absolute flex flex-col items-center justify-center rounded-xl border-2 transition-all',
-                  hoveredSegment === seg.name
-                    ? 'border-primary bg-primary/20 scale-110'
-                    : 'border-border bg-card/80 hover:border-primary/50'
+                  'absolute flex flex-col items-center justify-center rounded-2xl border transition-all duration-150',
+                  isHighlighted
+                    ? 'border-primary bg-primary/15 shadow-lg shadow-primary/10 scale-[1.04]'
+                    : 'border-border bg-card/90 hover:border-primary/50'
                 )}
                 style={{
                   left: `calc(50% + ${x}px - 42px)`,
-                  top: `calc(50% + ${y}px - 32px)`,
+                  top: `calc(50% + ${y}px - 36px)`,
                   width: 84,
-                  height: 64,
+                  height: 72,
                 }}
-                onClick={() => handleCategorize(seg.name)}
-                onHoverStart={() => setHoveredSegment(seg.name)}
+                onClick={() => handleCategorize(segment.name)}
+                onHoverStart={() => setHoveredSegment(segment.name)}
                 onHoverEnd={() => setHoveredSegment(null)}
-                whileHover={{ scale: 1.1 }}
+                whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <span className="text-lg">{seg.icon}</span>
-                <span className="text-[10px] font-body font-semibold text-foreground mt-0.5">{seg.name}</span>
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-secondary text-foreground">
+                  <SpriteIcon icon={segment.icon} />
+                </span>
+                <span className="mt-1 text-[10px] font-body font-semibold uppercase tracking-[0.12em] text-foreground">
+                  {segment.name}
+                </span>
               </motion.button>
             );
           })}
 
-          {/* Center card */}
           <AnimatePresence mode="wait">
-            {currentCard && !showExplanation && (
+            {!showExplanation && (
               <motion.div
                 key={currentCard.event}
                 className="absolute cursor-grab active:cursor-grabbing"
                 style={{
-                  left: 'calc(50% - 70px)',
-                  top: 'calc(50% - 40px)',
-                  width: 140,
-                  height: 80,
+                  left: 'calc(50% - 74px)',
+                  top: 'calc(50% - 46px)',
+                  width: 148,
+                  height: 92,
                   touchAction: 'none',
                 }}
                 drag
+                dragSnapToOrigin
                 dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-                dragElastic={0.8}
+                dragElastic={0.16}
+                onDrag={handleDrag}
                 onDragEnd={handleDragEnd}
-                initial={{ scale: 0, rotate: -10 }}
-                animate={{ scale: 1, rotate: 0 }}
-                exit={{ scale: 0, rotate: 10 }}
-                transition={{ type: 'spring', bounce: 0.4 }}
+                initial={{ scale: 0.94, opacity: 0, rotate: -6 }}
+                animate={{ scale: 1, opacity: 1, rotate: 0 }}
+                exit={{ scale: 0.94, opacity: 0, rotate: 6 }}
+                transition={{ type: 'spring', stiffness: 280, damping: 22 }}
               >
-                <div className="w-full h-full bg-card border-2 border-primary rounded-xl flex flex-col items-center justify-center p-2 shadow-lg shadow-primary/20">
-                  <span className="text-xs font-body text-muted-foreground">{currentCard.period}</span>
+                <div className="w-full h-full bg-card border-2 border-primary rounded-2xl flex flex-col items-center justify-center p-3 shadow-lg shadow-primary/10">
+                  <span className="text-[11px] font-body uppercase tracking-[0.2em] text-muted-foreground">{currentCard.period}</span>
                   <span className="text-sm font-display font-bold text-foreground text-center leading-tight mt-1">
                     {currentCard.event}
                   </span>
@@ -300,7 +384,6 @@ const TalonPage = () => {
             )}
           </AnimatePresence>
 
-          {/* Explanation overlay */}
           <AnimatePresence>
             {showExplanation && (
               <motion.div
@@ -309,18 +392,21 @@ const TalonPage = () => {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
               >
-                <div className="bg-card border border-destructive/50 rounded-xl p-5 max-w-xs text-center shadow-xl">
-                  <p className="text-xs font-body font-semibold text-destructive mb-2">
-                    ❌ Incorrect — The answer was: {currentCard?.category}
+                <div className="bg-card border border-border rounded-2xl p-5 max-w-sm text-center shadow-xl">
+                  <p className="text-xs font-body font-semibold uppercase tracking-[0.2em] text-destructive mb-2">
+                    Review
                   </p>
-                  <p className="text-sm font-body text-muted-foreground mb-4">
+                  <h3 className="font-display text-lg font-semibold text-foreground mb-2">
+                    Best fit: {currentCard.category}
+                  </h3>
+                  <p className="text-sm font-body text-muted-foreground mb-4 leading-relaxed">
                     {showExplanation}
                   </p>
                   <button
                     onClick={confirmExplanation}
                     className="px-4 py-2 rounded-lg bg-primary text-primary-foreground font-body font-semibold text-sm hover:opacity-90"
                   >
-                    Got it — Continue
+                    Continue
                   </button>
                 </div>
               </motion.div>
