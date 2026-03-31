@@ -36,7 +36,6 @@
 
     --radius: 0.5rem;
 
-    /* Game category colors */
     --cat-yellow: 45 95% 60%;
     --cat-green: 145 60% 45%;
     --cat-blue: 215 70% 55%;
@@ -47,7 +46,6 @@
     --cat-blue-fg: 215 30% 10%;
     --cat-purple-fg: 275 30% 10%;
 
-    /* Sidebar */
     --sidebar-background: 220 14% 10%;
     --sidebar-foreground: 40 20% 85%;
     --sidebar-primary: 40 65% 55%;
@@ -86,6 +84,9 @@
   }
 }
 
-#lovable-badge {
+#lovable-badge,
+[id="lovable-badge"] {
   display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
