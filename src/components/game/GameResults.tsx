@@ -1,5 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
+import { ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { GameState, DailyPuzzle, PrestigeScore } from '@/lib/gameData';
 import { SolvedRow } from './SolvedRow';
 import { useAuth } from '@/hooks/useAuth';
@@ -80,7 +82,7 @@ export function GameResults({ puzzle, state, score }: GameResultsProps) {
       </div>
 
       {won && (
-        <div className="bg-card border border-border rounded-lg p-5">
+        <div className="bg-card border border-border rounded-lg p-5 mb-6">
           <h3 className="font-display text-lg font-bold text-center text-primary mb-3">
             {score.total} PP
           </h3>
@@ -104,11 +106,31 @@ export function GameResults({ puzzle, state, score }: GameResultsProps) {
           </div>
           {!user && (
             <p className="text-xs text-muted-foreground font-body text-center mt-3">
-              Sign in with Google on the Leaderboard page to save your score!
+              Sign in with Google on the Leaderboard page to save your score.
             </p>
           )}
         </div>
       )}
+
+      <div className="bg-card border border-border rounded-lg p-5">
+        <h3 className="font-display text-sm font-semibold text-foreground mb-3">Keep practicing</h3>
+        <div className="flex flex-col gap-2">
+          <Link
+            to={`/questions?period=${encodeURIComponent(puzzle.period)}`}
+            className="flex items-center justify-between px-3 py-2 rounded-md bg-secondary hover:bg-secondary/80 transition-colors"
+          >
+            <span className="text-sm font-body text-foreground">Questions — {puzzle.period}</span>
+            <ArrowRight className="h-4 w-4 text-muted-foreground" />
+          </Link>
+          <Link
+            to="/notes"
+            className="flex items-center justify-between px-3 py-2 rounded-md bg-secondary hover:bg-secondary/80 transition-colors"
+          >
+            <span className="text-sm font-body text-foreground">Review Notes</span>
+            <ArrowRight className="h-4 w-4 text-muted-foreground" />
+          </Link>
+        </div>
+      </div>
     </motion.div>
   );
 }
