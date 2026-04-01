@@ -3,7 +3,8 @@ import { getDailyPuzzle } from '@/lib/gameData';
 import { ConnectionsGrid } from '@/components/game/ConnectionsGrid';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
-import { Lock } from 'lucide-react';
+import { Lock, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 function getTodayKey(subject: string) {
   return `nexus_played_${subject}_${new Date().toISOString().split('T')[0]}`;
