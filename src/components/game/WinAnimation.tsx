@@ -18,8 +18,8 @@ export function WinAnimation({ subject, onComplete }: WinAnimationProps) {
   const eyebrow = isApush ? 'APUSH' : 'AP World';
   const title = isApush ? 'Perfect Clear' : 'World Mastery';
   const description = isApush
-    ? 'You completed today's APUSH challenge with a clean run.'
-    : 'You completed today's AP World challenge with a clean run.';
+    ? "You completed today's APUSH challenge with a clean run."
+    : "You completed today's AP World challenge with a clean run.";
 
   return (
     <motion.div
