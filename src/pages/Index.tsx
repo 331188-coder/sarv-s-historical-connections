@@ -64,9 +64,35 @@ const Index = () => {
               Daily Challenge Complete
             </h2>
             <p className="text-muted-foreground font-body text-sm max-w-md">
-              You've already completed today's {subject === 'apush' ? 'APUSH' : 'AP World'} Nexus.
-              Come back tomorrow for a new puzzle! In the meantime, try The Talon, review Notes, or practice Questions.
+              {"You've already completed today's"} {subject === 'apush' ? 'APUSH' : 'AP World'} Nexus.
+              Come back tomorrow for a new puzzle.
             </p>
+            <div className="bg-card border border-border rounded-lg p-5 max-w-sm w-full mt-4">
+              <h3 className="font-display text-sm font-semibold text-foreground mb-3">Keep practicing</h3>
+              <div className="flex flex-col gap-2">
+                <Link
+                  to={`/questions?period=${encodeURIComponent(puzzle.period)}`}
+                  className="flex items-center justify-between px-3 py-2 rounded-md bg-secondary hover:bg-secondary/80 transition-colors"
+                >
+                  <span className="text-sm font-body text-foreground">Questions — {puzzle.period}</span>
+                  <ArrowRight className="h-4 w-4 text-muted-foreground" />
+                </Link>
+                <Link
+                  to="/talon"
+                  className="flex items-center justify-between px-3 py-2 rounded-md bg-secondary hover:bg-secondary/80 transition-colors"
+                >
+                  <span className="text-sm font-body text-foreground">Play The Talon</span>
+                  <ArrowRight className="h-4 w-4 text-muted-foreground" />
+                </Link>
+                <Link
+                  to="/notes"
+                  className="flex items-center justify-between px-3 py-2 rounded-md bg-secondary hover:bg-secondary/80 transition-colors"
+                >
+                  <span className="text-sm font-body text-foreground">Review Notes</span>
+                  <ArrowRight className="h-4 w-4 text-muted-foreground" />
+                </Link>
+              </div>
+            </div>
           </div>
         ) : (
           <ConnectionsGrid
