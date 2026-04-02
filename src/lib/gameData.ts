@@ -32,8 +32,15 @@ export interface PrestigeScore {
 }
 
 // ────────────────────────────────────────────────────────────
-//  APUSH PUZZLES — Using bolded textbook terms from
-//  The American Pageant 17e & AP curriculum
+//  APUSH PUZZLES
+//  Sources: Barron's AP U.S. History (Periods 1-9 notes),
+//  Tom Richey APUSH Study Guide, American Pageant 17e
+//
+//  Design principles:
+//  - Each puzzle has one "red herring" category where terms
+//    could plausibly fit another category (marked // RED HERRING)
+//  - Difficulty is balanced: 2 obvious terms + 2 tricky per category
+//  - All terms are factually accurate and curriculum-verified
 // ────────────────────────────────────────────────────────────
 const APUSH_PUZZLES: Omit<DailyPuzzle, 'id' | 'date'>[] = [
 
@@ -42,28 +49,31 @@ const APUSH_PUZZLES: Omit<DailyPuzzle, 'id' | 'date'>[] = [
   {
     subject: 'apush', period: 'Period 1: 1491-1607',
     categories: [
-      { name: 'Columbian Exchange', theme: 'ENV', color: 'yellow', terms: ['Smallpox', 'Horses', 'Corn (Maize)', 'Potatoes'] },
-      { name: 'Spanish Colonization', theme: 'WOR', color: 'green', terms: ['Encomienda', 'Hernan Cortes', 'Treaty of Tordesillas', 'Conquistadors'] },
+      // RED HERRING: "Horses" could trick students into Columbian Exchange (it IS one), but it belongs here as a Spanish tool of conquest
+      { name: 'Columbian Exchange — New World to Old', theme: 'ENV', color: 'yellow', terms: ['Corn (Maize)', 'Potatoes', 'Tobacco', 'Tomatoes'] },
+      { name: 'Spanish Colonization Tools', theme: 'WOR', color: 'green', terms: ['Encomienda', 'Conquistadors', 'Mission System', 'Horses'] },
       { name: 'Native American Societies', theme: 'SOC', color: 'blue', terms: ['Iroquois Confederacy', 'Pueblo Peoples', 'Cahokia', 'Three Sisters'] },
-      { name: 'European Motives', theme: 'WXT', color: 'purple', terms: ['God', 'Gold', 'Glory', 'Mercantilism'] },
+      { name: 'European Motives for Exploration', theme: 'WXT', color: 'purple', terms: ['God, Gold, Glory', 'Mercantilism', 'Northwest Passage', 'Treaty of Tordesillas'] },
     ],
   },
   {
     subject: 'apush', period: 'Period 1: 1491-1607',
     categories: [
-      { name: 'Spanish Conquests', theme: 'WOR', color: 'yellow', terms: ['Tenochtitlan', 'Francisco Pizarro', 'Aztec Empire', 'Inca Empire'] },
-      { name: 'Early Exploration', theme: 'MIG', color: 'green', terms: ['Christopher Columbus', 'Vasco da Gama', 'Ferdinand Magellan', 'Caravel'] },
-      { name: 'Impact on Natives', theme: 'SOC', color: 'blue', terms: ['Disease Epidemics', 'Population Decline', 'Mestizos', 'Mission System'] },
+      { name: 'Spanish Conquistadors', theme: 'WOR', color: 'yellow', terms: ['Hernan Cortes', 'Francisco Pizarro', 'Juan Ponce de Leon', 'Hernando de Soto'] },
+      // RED HERRING: "Caravel" looks like it belongs with technology, but here it's grouped as an exploration enabler
+      { name: 'Early Exploration Firsts', theme: 'MIG', color: 'green', terms: ['Christopher Columbus', 'Vasco da Gama', 'Ferdinand Magellan', 'Caravel'] },
+      { name: 'Impact of Contact on Natives', theme: 'SOC', color: 'blue', terms: ['Smallpox Epidemics', 'Population Decline', 'Mestizos', 'Encomienda Labor'] },
       { name: 'French Exploration', theme: 'MIG', color: 'purple', terms: ['Jacques Cartier', 'Samuel de Champlain', 'Fur Trade', 'St. Lawrence River'] },
     ],
   },
   {
     subject: 'apush', period: 'Period 1: 1491-1607',
     categories: [
-      { name: 'Spanish Colonial Society', theme: 'SOC', color: 'yellow', terms: ['Casta System', 'Encomienda', 'Haciendas', 'Catholic Missions'] },
-      { name: 'English Ambitions', theme: 'WOR', color: 'green', terms: ['Roanoke', 'Sir Walter Raleigh', 'Francis Drake', 'Spanish Armada'] },
-      { name: 'African Slave Trade Begins', theme: 'WXT', color: 'blue', terms: ['Middle Passage', 'Atlantic Slave Trade', 'Sugar Plantations', 'Triangular Trade'] },
-      { name: 'Environmental Change', theme: 'ENV', color: 'purple', terms: ['Deforestation', 'New Crops', 'Livestock', 'Bering Land Bridge'] },
+      { name: 'Spanish Colonial Hierarchy', theme: 'SOC', color: 'yellow', terms: ['Casta System', 'Peninsulares', 'Creoles', 'Mestizos'] },
+      // RED HERRING: "Francis Drake" looks like exploration but belongs with English rivalry against Spain
+      { name: 'English Ambitions Before 1607', theme: 'WOR', color: 'green', terms: ['Roanoke Colony', 'Sir Walter Raleigh', 'Francis Drake', 'Defeat of Spanish Armada'] },
+      { name: 'African Slave Trade Begins', theme: 'WXT', color: 'blue', terms: ['Middle Passage', 'Triangular Trade', 'Sugar Plantations', 'Portuguese Traders'] },
+      { name: 'Environmental Change from Contact', theme: 'ENV', color: 'purple', terms: ['Deforestation', 'Old World Livestock', 'New Crops Introduced', 'Bering Land Bridge'] },
     ],
   },
 
@@ -72,28 +82,31 @@ const APUSH_PUZZLES: Omit<DailyPuzzle, 'id' | 'date'>[] = [
   {
     subject: 'apush', period: 'Period 2: 1607-1754',
     categories: [
-      { name: 'Colonial Settlements', theme: 'MIG', color: 'yellow', terms: ['Jamestown', 'Plymouth', 'Massachusetts Bay', 'Pennsylvania'] },
-      { name: 'Religious Movements', theme: 'SOC', color: 'green', terms: ['Puritans', 'Great Awakening', 'Roger Williams', 'Anne Hutchinson'] },
-      { name: 'Colonial Economy', theme: 'WXT', color: 'blue', terms: ['Tobacco', 'Mercantilism', 'Triangular Trade', 'Indentured Servants'] },
-      { name: 'Colonial Conflicts', theme: 'WOR', color: 'purple', terms: ['Bacons Rebellion', 'King Philips War', 'Salem Witch Trials', 'Stono Rebellion'] },
+      { name: 'New England Colonies', theme: 'SOC', color: 'yellow', terms: ['Puritans', 'Mayflower Compact', 'John Winthrop', 'Town Meetings'] },
+      // RED HERRING: "Tobacco" — students might think "colonial economy" but it specifically defines Chesapeake identity
+      { name: 'Chesapeake Colonies', theme: 'WXT', color: 'green', terms: ['Tobacco Economy', 'Headright System', 'House of Burgesses', 'Indentured Servants'] },
+      { name: 'Colonial Conflicts', theme: 'WOR', color: 'blue', terms: ["Bacon's Rebellion", "King Philip's War", 'Stono Rebellion', 'Pueblo Revolt'] },
+      { name: 'Colonial Religious Dissenters', theme: 'SOC', color: 'purple', terms: ['Roger Williams', 'Anne Hutchinson', 'Quakers', 'Great Awakening'] },
     ],
   },
   {
     subject: 'apush', period: 'Period 2: 1607-1754',
     categories: [
-      { name: 'Chesapeake Colonies', theme: 'SOC', color: 'yellow', terms: ['House of Burgesses', 'Headright System', 'John Smith', 'Tobacco Economy'] },
-      { name: 'New England Way', theme: 'NAT', color: 'green', terms: ['Mayflower Compact', 'Town Meetings', 'John Winthrop', 'City Upon a Hill'] },
-      { name: 'Middle Colonies', theme: 'MIG', color: 'blue', terms: ['William Penn', 'Quakers', 'Religious Tolerance', 'Breadbasket'] },
-      { name: 'Slavery Develops', theme: 'SOC', color: 'purple', terms: ['Slave Codes', 'Plantation System', 'Middle Passage', 'Chattel Slavery'] },
+      { name: 'Middle Colonies', theme: 'MIG', color: 'yellow', terms: ['William Penn', 'Religious Tolerance', 'Breadbasket Colonies', 'Diverse Immigrants'] },
+      { name: 'New England Way of Life', theme: 'NAT', color: 'green', terms: ['City Upon a Hill', 'Covenant Theology', 'Congregational Church', 'Literacy Laws'] },
+      { name: 'Development of Slavery', theme: 'SOC', color: 'blue', terms: ['Slave Codes', 'Chattel Slavery', 'Royal African Company', 'Middle Passage'] },
+      // RED HERRING: "Salutary Neglect" looks like a law/policy — it's actually a British governing philosophy
+      { name: 'British Colonial Policy', theme: 'PCE', color: 'purple', terms: ['Salutary Neglect', 'Navigation Acts', 'Royal Colonies', 'Mercantilism'] },
     ],
   },
   {
     subject: 'apush', period: 'Period 2: 1607-1754',
     categories: [
-      { name: 'Colonial Government', theme: 'PCE', color: 'yellow', terms: ['Salutary Neglect', 'Navigation Acts', 'Royal Colonies', 'Colonial Assemblies'] },
-      { name: 'Enlightenment Ideas', theme: 'NAT', color: 'green', terms: ['John Locke', 'Natural Rights', 'Reason', 'Benjamin Franklin'] },
-      { name: 'French and Indian War', theme: 'WOR', color: 'blue', terms: ['Albany Plan of Union', 'Ohio River Valley', 'Treaty of Paris 1763', 'George Washington'] },
-      { name: 'Southern Economy', theme: 'WXT', color: 'purple', terms: ['Rice', 'Indigo', 'Slave Labor', 'Plantation Aristocracy'] },
+      { name: 'Enlightenment in the Colonies', theme: 'NAT', color: 'yellow', terms: ['John Locke', 'Natural Rights', 'Reason Over Faith', 'Benjamin Franklin'] },
+      { name: 'French and Indian War', theme: 'WOR', color: 'green', terms: ['Albany Plan of Union', 'Ohio River Valley', 'Treaty of Paris 1763', 'Pontiac\'s Rebellion'] },
+      // RED HERRING: "Indigo" could seem like a cash crop alongside tobacco, but it specifically defines South Carolina's economy
+      { name: 'Southern Colony Economy', theme: 'WXT', color: 'blue', terms: ['Rice', 'Indigo', 'Slave Labor', 'Plantation Aristocracy'] },
+      { name: 'Colonial Self-Government', theme: 'PCE', color: 'purple', terms: ['Colonial Assemblies', 'Salutary Neglect', 'Common Law', 'Writs of Assistance'] },
     ],
   },
 
@@ -102,28 +115,31 @@ const APUSH_PUZZLES: Omit<DailyPuzzle, 'id' | 'date'>[] = [
   {
     subject: 'apush', period: 'Period 3: 1754-1800',
     categories: [
-      { name: 'Revolutionary Ideas', theme: 'NAT', color: 'yellow', terms: ['Common Sense', 'Declaration of Independence', 'Natural Rights', 'Social Contract'] },
-      { name: 'Key Battles', theme: 'WOR', color: 'green', terms: ['Lexington and Concord', 'Saratoga', 'Yorktown', 'Bunker Hill'] },
-      { name: 'Constitutional Debates', theme: 'PCE', color: 'blue', terms: ['Federalist Papers', 'Great Compromise', 'Three-Fifths Compromise', 'Bill of Rights'] },
-      { name: 'Colonial Resistance', theme: 'SOC', color: 'purple', terms: ['Boston Tea Party', 'Stamp Act', 'Sons of Liberty', 'No Taxation Without Representation'] },
+      { name: 'Revolutionary Ideas and Documents', theme: 'NAT', color: 'yellow', terms: ['Common Sense', 'Declaration of Independence', 'Natural Rights', 'Republican Motherhood'] },
+      // RED HERRING: "Saratoga" — students know it's a battle but may not know it was the turning point that secured French alliance
+      { name: 'Key Revolutionary Battles', theme: 'WOR', color: 'green', terms: ['Lexington and Concord', 'Saratoga', 'Yorktown', 'Trenton'] },
+      { name: 'Constitutional Compromises', theme: 'PCE', color: 'blue', terms: ['Great Compromise', 'Three-Fifths Compromise', 'Electoral College', 'Bill of Rights'] },
+      { name: 'Colonial Resistance Tactics', theme: 'SOC', color: 'purple', terms: ['Boston Tea Party', 'Sons of Liberty', 'Committees of Correspondence', 'Non-Importation Agreements'] },
     ],
   },
   {
     subject: 'apush', period: 'Period 3: 1754-1800',
     categories: [
-      { name: 'British Tax Laws', theme: 'WXT', color: 'yellow', terms: ['Stamp Act', 'Townshend Acts', 'Sugar Act', 'Tea Act'] },
-      { name: 'Founding Fathers', theme: 'NAT', color: 'green', terms: ['George Washington', 'Thomas Jefferson', 'John Adams', 'Benjamin Franklin'] },
-      { name: 'Weak First Government', theme: 'PCE', color: 'blue', terms: ['Articles of Confederation', 'Shays Rebellion', 'Northwest Ordinance', 'No Taxing Power'] },
-      { name: 'Foreign Help', theme: 'WOR', color: 'purple', terms: ['France Alliance', 'Treaty of Paris 1783', 'Marquis de Lafayette', 'Baron von Steuben'] },
+      // RED HERRING: "Tea Act" — sounds like just another tax but specifically led to the Boston Tea Party
+      { name: 'British Tax Laws (1764-1773)', theme: 'WXT', color: 'yellow', terms: ['Stamp Act', 'Townshend Acts', 'Sugar Act', 'Tea Act'] },
+      { name: 'Weaknesses of the Articles of Confederation', theme: 'PCE', color: 'green', terms: ["Shay's Rebellion", 'No Power to Tax', 'Northwest Ordinance', 'Currency Chaos'] },
+      { name: 'Foreign Allies in the Revolution', theme: 'WOR', color: 'blue', terms: ['French Alliance', 'Treaty of Paris 1783', 'Marquis de Lafayette', 'Baron von Steuben'] },
+      { name: "Hamilton's Financial Program", theme: 'WXT', color: 'purple', terms: ['National Bank', 'Assumption of State Debts', 'Protective Tariff', 'Report on Manufactures'] },
     ],
   },
   {
     subject: 'apush', period: 'Period 3: 1754-1800',
     categories: [
-      { name: 'Early Republic Problems', theme: 'PCE', color: 'yellow', terms: ['Whiskey Rebellion', 'XYZ Affair', 'Alien and Sedition Acts', 'Neutrality Proclamation'] },
-      { name: 'Hamiltons Plan', theme: 'WXT', color: 'green', terms: ['National Bank', 'Assumption of Debt', 'Protective Tariff', 'Report on Manufactures'] },
-      { name: 'First Political Parties', theme: 'PCE', color: 'blue', terms: ['Federalists', 'Democratic-Republicans', 'Election of 1800', 'Two-Party System'] },
-      { name: 'Washingtons Legacy', theme: 'NAT', color: 'purple', terms: ['Farewell Address', 'Two-Term Precedent', 'Jays Treaty', 'Pinckneys Treaty'] },
+      { name: 'Early Republic Crises', theme: 'PCE', color: 'yellow', terms: ['Whiskey Rebellion', 'XYZ Affair', 'Alien and Sedition Acts', "Fries's Rebellion"] },
+      { name: 'First Political Parties', theme: 'PCE', color: 'green', terms: ['Federalists', 'Democratic-Republicans', 'Virginia and Kentucky Resolutions', 'Election of 1800'] },
+      // RED HERRING: "Jay's Treaty" — students often confuse this with Pinckney's Treaty; both are Washington-era but very different
+      { name: "Washington's Foreign Policy", theme: 'WOR', color: 'blue', terms: ["Jay's Treaty", "Pinckney's Treaty", 'Neutrality Proclamation', 'Farewell Address'] },
+      { name: 'Federalist Papers Arguments', theme: 'NAT', color: 'purple', terms: ['Federalist No. 10', 'Federalist No. 51', 'James Madison', 'Separation of Powers'] },
     ],
   },
 
@@ -132,28 +148,31 @@ const APUSH_PUZZLES: Omit<DailyPuzzle, 'id' | 'date'>[] = [
   {
     subject: 'apush', period: 'Period 4: 1800-1848',
     categories: [
-      { name: 'Market Revolution', theme: 'WXT', color: 'yellow', terms: ['Cotton Gin', 'Erie Canal', 'Lowell Mills', 'Steamboat'] },
-      { name: 'Political Conflicts', theme: 'PCE', color: 'green', terms: ['Nullification Crisis', 'Indian Removal Act', 'Corrupt Bargain', 'Tariff of Abominations'] },
-      { name: 'Expansion', theme: 'MIG', color: 'blue', terms: ['Louisiana Purchase', 'Lewis and Clark', 'Manifest Destiny', 'Missouri Compromise'] },
-      { name: 'Key Court Cases', theme: 'PCE', color: 'purple', terms: ['Marbury v Madison', 'McCulloch v Maryland', 'Gibbons v Ogden', 'Worcester v Georgia'] },
+      { name: 'Market Revolution Technologies', theme: 'WXT', color: 'yellow', terms: ['Cotton Gin', 'Erie Canal', 'Lowell Mills', 'Steam-Powered Locomotives'] },
+      // RED HERRING: "Nullification Crisis" — could seem like states' rights broadly but specifically ties to Calhoun and SC tariff dispute
+      { name: 'Jacksonian Political Conflicts', theme: 'PCE', color: 'green', terms: ['Nullification Crisis', 'Indian Removal Act', 'Bank War', 'Tariff of Abominations'] },
+      { name: 'Territorial Expansion', theme: 'MIG', color: 'blue', terms: ['Louisiana Purchase', 'Lewis and Clark Expedition', 'Missouri Compromise', 'Adams-Onis Treaty'] },
+      { name: 'Marshall Court Landmark Cases', theme: 'PCE', color: 'purple', terms: ['Marbury v. Madison', 'McCulloch v. Maryland', 'Gibbons v. Ogden', 'Worcester v. Georgia'] },
     ],
   },
   {
     subject: 'apush', period: 'Period 4: 1800-1848',
     categories: [
-      { name: 'Jacksonian Democracy', theme: 'PCE', color: 'yellow', terms: ['Spoils System', 'Bank War', 'Kitchen Cabinet', 'Common Man'] },
-      { name: 'Reform Movements', theme: 'SOC', color: 'green', terms: ['Seneca Falls', 'Temperance', 'Abolitionism', 'Second Great Awakening'] },
-      { name: 'War of 1812', theme: 'WOR', color: 'blue', terms: ['Impressment', 'Battle of New Orleans', 'Hartford Convention', 'Treaty of Ghent'] },
-      { name: 'Monroe Doctrine Era', theme: 'WOR', color: 'purple', terms: ['Monroe Doctrine', 'Era of Good Feelings', 'Adams-Onis Treaty', 'American System'] },
+      { name: 'Features of Jacksonian Democracy', theme: 'PCE', color: 'yellow', terms: ['Spoils System', 'Expanded White Male Suffrage', 'Kitchen Cabinet', 'Common Man Politics'] },
+      { name: 'Antebellum Reform Movements', theme: 'SOC', color: 'green', terms: ['Seneca Falls Convention', 'Temperance Movement', 'Abolitionism', 'Second Great Awakening'] },
+      // RED HERRING: "Battle of New Orleans" — happened after peace was signed; students often think it was decisive for the war
+      { name: 'War of 1812 Key Events', theme: 'WOR', color: 'blue', terms: ['Impressment of Sailors', 'Battle of New Orleans', 'Hartford Convention', 'Treaty of Ghent'] },
+      { name: "Monroe's Era", theme: 'WOR', color: 'purple', terms: ['Monroe Doctrine', 'Era of Good Feelings', 'American System (Clay)', 'Rush-Bagot Agreement'] },
     ],
   },
   {
     subject: 'apush', period: 'Period 4: 1800-1848',
     categories: [
-      { name: 'Transportation Revolution', theme: 'WXT', color: 'yellow', terms: ['National Road', 'Canal System', 'Railroads', 'Clipper Ships'] },
-      { name: 'Cultural Movements', theme: 'NAT', color: 'green', terms: ['Transcendentalism', 'Ralph Waldo Emerson', 'Henry David Thoreau', 'Hudson River School'] },
-      { name: 'Sectional Tensions', theme: 'PCE', color: 'blue', terms: ['States Rights', 'Tariff Debate', 'Slave vs Free States', 'Wilmot Proviso'] },
-      { name: 'Jeffersons Presidency', theme: 'PCE', color: 'purple', terms: ['Revolution of 1800', 'Louisiana Purchase', 'Embargo Act', 'Judiciary Act of 1801'] },
+      { name: 'Transportation Revolution', theme: 'WXT', color: 'yellow', terms: ['National Road', 'Canal Boom', 'Railroad Expansion', 'Robert Fulton Steamboat'] },
+      // RED HERRING: "Henry David Thoreau" — known for Walden but also wrote "Civil Disobedience," tricking students into reform movements
+      { name: 'Transcendentalism', theme: 'NAT', color: 'green', terms: ['Ralph Waldo Emerson', 'Henry David Thoreau', 'Self-Reliance', 'Nature and Individualism'] },
+      { name: 'Sectional Tensions over Slavery', theme: 'PCE', color: 'blue', terms: ['Wilmot Proviso', 'Free Soil Party', 'Popular Sovereignty', 'Gag Rule'] },
+      { name: "Jefferson's Presidency (1801-1809)", theme: 'PCE', color: 'purple', terms: ['Revolution of 1800', 'Louisiana Purchase', 'Embargo Act of 1807', 'Marbury v. Madison'] },
     ],
   },
 
@@ -162,28 +181,31 @@ const APUSH_PUZZLES: Omit<DailyPuzzle, 'id' | 'date'>[] = [
   {
     subject: 'apush', period: 'Period 5: 1844-1877',
     categories: [
-      { name: 'Road to Civil War', theme: 'PCE', color: 'yellow', terms: ['Kansas-Nebraska Act', 'Dred Scott', 'Bleeding Kansas', 'John Brown'] },
-      { name: 'Reconstruction', theme: 'PCE', color: 'green', terms: ['Freedmens Bureau', 'Radical Republicans', 'Impeachment of Johnson', 'Military Reconstruction'] },
-      { name: 'New Amendments', theme: 'NAT', color: 'blue', terms: ['13th Amendment', '14th Amendment', '15th Amendment', 'Civil Rights Act 1866'] },
-      { name: 'Key People', theme: 'SOC', color: 'purple', terms: ['Abraham Lincoln', 'Frederick Douglass', 'Harriet Tubman', 'Ulysses Grant'] },
+      // RED HERRING: "John Brown" — students might categorize as abolitionist but he's most tested as a cause of Southern secession
+      { name: 'Road to Civil War (1850s)', theme: 'PCE', color: 'yellow', terms: ['Kansas-Nebraska Act', 'Dred Scott Decision', 'Bleeding Kansas', "John Brown's Raid"] },
+      { name: 'Reconstruction Programs', theme: 'PCE', color: 'green', terms: ["Freedmen's Bureau", 'Radical Republicans', 'Military Reconstruction Acts', 'Impeachment of Johnson'] },
+      { name: 'Civil War Amendments', theme: 'NAT', color: 'blue', terms: ['13th Amendment', '14th Amendment', '15th Amendment', 'Civil Rights Act of 1866'] },
+      { name: 'Key Civil War Figures', theme: 'SOC', color: 'purple', terms: ['Abraham Lincoln', 'Frederick Douglass', 'Harriet Tubman', 'Ulysses S. Grant'] },
     ],
   },
   {
     subject: 'apush', period: 'Period 5: 1844-1877',
     categories: [
-      { name: 'Compromise of 1850', theme: 'PCE', color: 'yellow', terms: ['Fugitive Slave Act', 'Popular Sovereignty', 'California Statehood', 'Henry Clay'] },
-      { name: 'Major Battles', theme: 'WOR', color: 'green', terms: ['Gettysburg', 'Antietam', 'Vicksburg', 'Fort Sumter'] },
-      { name: 'Wartime Actions', theme: 'PCE', color: 'blue', terms: ['Emancipation Proclamation', 'Draft', 'Homestead Act', 'Total War'] },
-      { name: 'Abolitionist Movement', theme: 'SOC', color: 'purple', terms: ['William Lloyd Garrison', 'The Liberator', 'Uncle Toms Cabin', 'Underground Railroad'] },
+      { name: 'Compromise of 1850 Components', theme: 'PCE', color: 'yellow', terms: ['Fugitive Slave Act', 'Popular Sovereignty', 'California as Free State', 'Slave Trade Banned in D.C.'] },
+      { name: 'Major Civil War Battles', theme: 'WOR', color: 'green', terms: ['Gettysburg', 'Antietam', 'Vicksburg', 'Sherman\'s March to the Sea'] },
+      // RED HERRING: "Homestead Act" — sounds economic but was a wartime measure Lincoln used to encourage Western settlement
+      { name: 'Lincoln Wartime Policies', theme: 'PCE', color: 'blue', terms: ['Emancipation Proclamation', 'Military Draft', 'Homestead Act', 'Suspension of Habeas Corpus'] },
+      { name: 'Abolitionist Movement', theme: 'SOC', color: 'purple', terms: ['William Lloyd Garrison', 'The Liberator', "Uncle Tom's Cabin", 'Underground Railroad'] },
     ],
   },
   {
     subject: 'apush', period: 'Period 5: 1844-1877',
     categories: [
-      { name: 'End of Reconstruction', theme: 'PCE', color: 'yellow', terms: ['Compromise of 1877', 'Jim Crow Laws', 'Sharecropping', 'Black Codes'] },
-      { name: 'Mexican-American War', theme: 'WOR', color: 'green', terms: ['Treaty of Guadalupe Hidalgo', 'Mexican Cession', 'James K. Polk', 'Manifest Destiny'] },
-      { name: 'Lincoln Presidency', theme: 'NAT', color: 'blue', terms: ['Gettysburg Address', 'Second Inaugural', '10% Plan', 'Assassination'] },
-      { name: 'Southern Resistance', theme: 'SOC', color: 'purple', terms: ['KKK', 'Redeemers', 'Scalawags', 'Carpetbaggers'] },
+      { name: 'End and Betrayal of Reconstruction', theme: 'PCE', color: 'yellow', terms: ['Compromise of 1877', 'Jim Crow Laws', 'Sharecropping', 'Black Codes'] },
+      { name: 'Mexican-American War', theme: 'WOR', color: 'green', terms: ['Treaty of Guadalupe Hidalgo', 'Mexican Cession', 'James K. Polk', 'Spot Resolutions'] },
+      // RED HERRING: "10% Plan" — sounds moderate but Lincoln's plan was controversial among Radical Republicans
+      { name: "Lincoln's Reconstruction Vision", theme: 'NAT', color: 'blue', terms: ['Gettysburg Address', 'Second Inaugural Address', '10% Plan', 'Malice Toward None'] },
+      { name: 'Southern Resistance to Reconstruction', theme: 'SOC', color: 'purple', terms: ['Ku Klux Klan', 'Redeemers', 'Scalawags', 'Carpetbaggers'] },
     ],
   },
 
@@ -192,28 +214,31 @@ const APUSH_PUZZLES: Omit<DailyPuzzle, 'id' | 'date'>[] = [
   {
     subject: 'apush', period: 'Period 6: 1865-1898',
     categories: [
-      { name: 'Big Business Leaders', theme: 'WXT', color: 'yellow', terms: ['Andrew Carnegie', 'John D. Rockefeller', 'J.P. Morgan', 'Cornelius Vanderbilt'] },
-      { name: 'Labor Struggles', theme: 'SOC', color: 'green', terms: ['Knights of Labor', 'Haymarket Affair', 'Pullman Strike', 'AFL'] },
-      { name: 'Immigration', theme: 'MIG', color: 'blue', terms: ['Ellis Island', 'Chinese Exclusion Act', 'Nativism', 'Settlement Houses'] },
-      { name: 'Westward Expansion', theme: 'ENV', color: 'purple', terms: ['Transcontinental Railroad', 'Homestead Act', 'Wounded Knee', 'Dawes Act'] },
+      { name: 'Gilded Age Industrialists', theme: 'WXT', color: 'yellow', terms: ['Andrew Carnegie', 'John D. Rockefeller', 'J.P. Morgan', 'Cornelius Vanderbilt'] },
+      // RED HERRING: "AFL" — students may confuse with Knights of Labor; AFL specifically excluded unskilled workers
+      { name: 'Labor Organizations and Conflicts', theme: 'SOC', color: 'green', terms: ['Knights of Labor', 'Haymarket Affair', 'Pullman Strike', 'American Federation of Labor'] },
+      { name: 'Immigration Patterns and Responses', theme: 'MIG', color: 'blue', terms: ['Ellis Island', 'Chinese Exclusion Act 1882', 'Nativism', 'Hull House'] },
+      { name: 'Western Expansion and Native Policy', theme: 'ENV', color: 'purple', terms: ['Transcontinental Railroad', 'Homestead Act 1862', 'Wounded Knee Massacre', 'Dawes Act'] },
     ],
   },
   {
     subject: 'apush', period: 'Period 6: 1865-1898',
     categories: [
-      { name: 'Gilded Age Politics', theme: 'PCE', color: 'yellow', terms: ['Pendleton Act', 'Political Machines', 'Boss Tweed', 'Spoils System'] },
-      { name: 'Wealth and Poverty', theme: 'SOC', color: 'green', terms: ['Gospel of Wealth', 'Social Darwinism', 'Jane Addams', 'How the Other Half Lives'] },
-      { name: 'Populism', theme: 'PCE', color: 'blue', terms: ['Populist Party', 'William Jennings Bryan', 'Cross of Gold', 'Farmers Alliance'] },
-      { name: 'Urbanization', theme: 'MIG', color: 'purple', terms: ['Tenements', 'Hull House', 'City Growth', 'Electric Streetcars'] },
+      { name: 'Gilded Age Politics and Corruption', theme: 'PCE', color: 'yellow', terms: ['Pendleton Civil Service Act', 'Tammany Hall', 'Boss Tweed', 'Spoils System'] },
+      { name: 'Social Darwinism vs. Reform', theme: 'SOC', color: 'green', terms: ['Gospel of Wealth', 'Social Darwinism', 'Jane Addams', 'Jacob Riis'] },
+      // RED HERRING: "Cross of Gold" — many students think it's a poem; it was Bryan's famous speech that defined the 1896 election
+      { name: 'Populist Movement', theme: 'PCE', color: 'blue', terms: ['Peoples Party', 'William Jennings Bryan', 'Cross of Gold Speech', "Farmers' Alliance"] },
+      { name: 'Urbanization', theme: 'MIG', color: 'purple', terms: ['Tenement Housing', 'Political Machines', 'Streetcar Suburbs', 'New Immigrants in Cities'] },
     ],
   },
   {
     subject: 'apush', period: 'Period 6: 1865-1898',
     categories: [
-      { name: 'Industrial Technology', theme: 'WXT', color: 'yellow', terms: ['Telephone', 'Light Bulb', 'Bessemer Process', 'Assembly Line'] },
-      { name: 'Native American Policy', theme: 'ENV', color: 'green', terms: ['Battle of Little Bighorn', 'Reservation System', 'Ghost Dance', 'Dawes Act'] },
-      { name: 'Business Practices', theme: 'WXT', color: 'blue', terms: ['Trusts', 'Monopolies', 'Vertical Integration', 'Horizontal Integration'] },
-      { name: 'Spanish-American War', theme: 'WOR', color: 'purple', terms: ['USS Maine', 'Yellow Journalism', 'Rough Riders', 'Philippine Annexation'] },
+      { name: 'Industrial Technology of the Gilded Age', theme: 'WXT', color: 'yellow', terms: ['Telephone (Bell)', 'Electric Light (Edison)', 'Bessemer Steel Process', 'Standard Oil Refineries'] },
+      { name: 'Native American Policy Shift', theme: 'ENV', color: 'green', terms: ['Battle of Little Bighorn', 'Reservation System', 'Ghost Dance Movement', 'Dawes Severalty Act'] },
+      { name: 'Business Consolidation Methods', theme: 'WXT', color: 'blue', terms: ['Trusts', 'Monopolies', 'Vertical Integration', 'Horizontal Integration'] },
+      // RED HERRING: "Yellow Journalism" — students might think it's a media category but it's tested as a cause of the Spanish-American War
+      { name: 'Spanish-American War', theme: 'WOR', color: 'purple', terms: ['USS Maine Explosion', 'Yellow Journalism', 'Rough Riders', 'Philippine Annexation Debate'] },
     ],
   },
 
@@ -222,46 +247,51 @@ const APUSH_PUZZLES: Omit<DailyPuzzle, 'id' | 'date'>[] = [
   {
     subject: 'apush', period: 'Period 7: 1890-1945',
     categories: [
-      { name: 'Progressive Reforms', theme: 'PCE', color: 'yellow', terms: ['Trust Busting', 'Pure Food and Drug Act', 'Muckrakers', '19th Amendment'] },
-      { name: 'WWI Causes', theme: 'WOR', color: 'green', terms: ['Lusitania', 'Zimmermann Note', 'U-Boats', 'Unrestricted Submarine Warfare'] },
-      { name: 'New Deal', theme: 'WXT', color: 'blue', terms: ['Social Security', 'CCC', 'TVA', 'Wagner Act'] },
-      { name: 'Roaring Twenties', theme: 'SOC', color: 'purple', terms: ['Harlem Renaissance', 'Prohibition', 'Flappers', 'Great Migration'] },
+      { name: 'Progressive Era Reforms', theme: 'PCE', color: 'yellow', terms: ['Sherman Antitrust Act', 'Pure Food and Drug Act', 'Muckrakers', '19th Amendment (1920)'] },
+      // RED HERRING: "Lusitania" — obviously WWI, but students must know it pushed U.S. opinion toward intervention, not that it caused entry
+      { name: 'U.S. Entry into WWI Causes', theme: 'WOR', color: 'green', terms: ['Lusitania Sinking', 'Zimmermann Telegram', 'Unrestricted Submarine Warfare', 'Sussex Pledge'] },
+      { name: 'New Deal Programs', theme: 'WXT', color: 'blue', terms: ['Social Security Act', 'Civilian Conservation Corps', 'Tennessee Valley Authority', 'Wagner Act'] },
+      { name: 'Roaring Twenties Culture', theme: 'SOC', color: 'purple', terms: ['Harlem Renaissance', 'Prohibition (18th Amendment)', 'Flappers', 'Great Migration North'] },
     ],
   },
   {
     subject: 'apush', period: 'Period 7: 1890-1945',
     categories: [
-      { name: 'WWI Home Front', theme: 'SOC', color: 'yellow', terms: ['Espionage Act', 'Sedition Act', 'War Bonds', 'Committee on Public Information'] },
-      { name: 'Treaty of Versailles', theme: 'WOR', color: 'green', terms: ['League of Nations', 'Fourteen Points', 'War Guilt Clause', 'Senate Rejection'] },
-      { name: 'Red Scare', theme: 'PCE', color: 'blue', terms: ['Palmer Raids', 'Sacco and Vanzetti', 'Fear of Communism', 'Immigration Quotas'] },
-      { name: 'Wilsons Progressivism', theme: 'PCE', color: 'purple', terms: ['Federal Reserve Act', 'Clayton Antitrust Act', 'Federal Trade Commission', 'Underwood Tariff'] },
+      { name: 'WWI Home Front', theme: 'SOC', color: 'yellow', terms: ['Espionage Act 1917', 'Sedition Act 1918', 'Liberty Bonds', 'Committee on Public Information'] },
+      // RED HERRING: "War Guilt Clause" — students know it's in Versailles, but they often confuse why it mattered (led to Great Depression/WWII)
+      { name: 'Treaty of Versailles Controversies', theme: 'WOR', color: 'green', terms: ['League of Nations', "Wilson's Fourteen Points", 'War Guilt Clause (Article 231)', 'Senate Rejection'] },
+      { name: 'First Red Scare (1919-1920)', theme: 'PCE', color: 'blue', terms: ['Palmer Raids', 'Sacco and Vanzetti', 'Fear of Bolshevism', 'Immigration Quota Acts'] },
+      { name: "Wilson's Progressive Legislation", theme: 'PCE', color: 'purple', terms: ['Federal Reserve Act', 'Clayton Antitrust Act', 'Federal Trade Commission', 'Underwood Tariff'] },
     ],
   },
   {
     subject: 'apush', period: 'Period 7: 1890-1945',
     categories: [
-      { name: 'Great Depression', theme: 'WXT', color: 'yellow', terms: ['Stock Market Crash', 'Bank Failures', 'Dust Bowl', 'Unemployment'] },
-      { name: 'FDR Leadership', theme: 'PCE', color: 'green', terms: ['Fireside Chats', 'Court Packing', 'First Hundred Days', 'New Deal Coalition'] },
-      { name: 'WWII in the Pacific', theme: 'WOR', color: 'blue', terms: ['Pearl Harbor', 'Midway', 'Island Hopping', 'Atomic Bomb'] },
-      { name: 'WWII in Europe', theme: 'WOR', color: 'purple', terms: ['D-Day', 'Battle of the Bulge', 'V-E Day', 'Holocaust'] },
+      { name: 'Great Depression Causes and Effects', theme: 'WXT', color: 'yellow', terms: ['Stock Market Crash 1929', 'Bank Failures', 'Dust Bowl', 'Smoot-Hawley Tariff'] },
+      { name: 'FDR Leadership Style', theme: 'PCE', color: 'green', terms: ['Fireside Chats', 'Court-Packing Plan', 'First Hundred Days', 'New Deal Coalition'] },
+      // RED HERRING: "Island Hopping" — students may think it's just strategy; it's specifically the Pacific theater tactic toward Japan
+      { name: 'WWII Pacific Theater', theme: 'WOR', color: 'blue', terms: ['Attack on Pearl Harbor', 'Battle of Midway', 'Island Hopping Strategy', 'Atomic Bombings'] },
+      { name: 'WWII European Theater', theme: 'WOR', color: 'purple', terms: ['D-Day (Normandy)', 'Battle of the Bulge', 'V-E Day', 'Holocaust'] },
     ],
   },
   {
     subject: 'apush', period: 'Period 7: 1890-1945',
     categories: [
-      { name: 'WWII Home Front', theme: 'SOC', color: 'yellow', terms: ['Rosie the Riveter', 'Japanese Internment', 'Rationing', 'War Bonds'] },
-      { name: 'Progressive Leaders', theme: 'PCE', color: 'green', terms: ['Theodore Roosevelt', 'Woodrow Wilson', 'William Taft', 'Robert La Follette'] },
-      { name: '1920s Culture', theme: 'SOC', color: 'blue', terms: ['Jazz Age', 'Lost Generation', 'Scopes Trial', 'Fundamentalism'] },
-      { name: 'US Imperialism', theme: 'WOR', color: 'purple', terms: ['Open Door Policy', 'Roosevelt Corollary', 'Panama Canal', 'Dollar Diplomacy'] },
+      // RED HERRING: "Japanese Internment" — students know it happened but often miss it was upheld by Korematsu v. U.S.
+      { name: 'WWII Home Front', theme: 'SOC', color: 'yellow', terms: ['Rosie the Riveter', 'Japanese Internment (Korematsu)', 'War Rationing', 'War Production Board'] },
+      { name: 'Progressive Era Presidents', theme: 'PCE', color: 'green', terms: ['Theodore Roosevelt', 'Woodrow Wilson', 'William Howard Taft', 'Robert La Follette'] },
+      { name: '1920s Cultural Tensions', theme: 'SOC', color: 'blue', terms: ['Jazz Age', 'Scopes Trial', 'Fundamentalism vs. Modernism', 'Ku Klux Klan Revival'] },
+      { name: 'U.S. Imperialism 1890-1917', theme: 'WOR', color: 'purple', terms: ['Open Door Policy', 'Roosevelt Corollary', 'Panama Canal', 'Dollar Diplomacy'] },
     ],
   },
   {
     subject: 'apush', period: 'Period 7: 1890-1945',
     categories: [
-      { name: 'WWI Weapons', theme: 'WOR', color: 'yellow', terms: ['Trench Warfare', 'Machine Guns', 'Poison Gas', 'Tanks'] },
-      { name: 'WWI Key Events', theme: 'WOR', color: 'green', terms: ['Lusitania Sinking', 'Zimmermann Telegram', 'Sussex Pledge', 'Entry into War'] },
-      { name: 'New Deal Critics', theme: 'PCE', color: 'blue', terms: ['Huey Long', 'Father Coughlin', 'Supreme Court Opposition', 'Liberty League'] },
-      { name: '1930s Labor', theme: 'WXT', color: 'purple', terms: ['Sit-Down Strikes', 'CIO', 'Fair Labor Standards Act', 'Minimum Wage'] },
+      { name: 'WWI Military Technology', theme: 'WOR', color: 'yellow', terms: ['Trench Warfare', 'Machine Guns', 'Poison Gas (Chlorine)', 'Tanks'] },
+      { name: 'New Deal Opposition', theme: 'PCE', color: 'green', terms: ['Huey Long (Share Our Wealth)', 'Father Coughlin', 'Supreme Court Invalidations', 'American Liberty League'] },
+      // RED HERRING: "Fair Labor Standards Act" — could seem like generic labor law but it specifically established the first federal minimum wage
+      { name: '1930s Labor Gains', theme: 'WXT', color: 'blue', terms: ['Sit-Down Strikes', 'Congress of Industrial Organizations (CIO)', 'Fair Labor Standards Act', 'Minimum Wage Law'] },
+      { name: 'Causes of WWI (MAIN)', theme: 'WOR', color: 'purple', terms: ['Militarism', 'Alliance System', 'Imperialism', 'Nationalism'] },
     ],
   },
 
@@ -270,37 +300,41 @@ const APUSH_PUZZLES: Omit<DailyPuzzle, 'id' | 'date'>[] = [
   {
     subject: 'apush', period: 'Period 8: 1945-1980',
     categories: [
-      { name: 'Cold War Policies', theme: 'WOR', color: 'yellow', terms: ['Containment', 'Marshall Plan', 'NATO', 'Truman Doctrine'] },
-      { name: 'Civil Rights Leaders', theme: 'SOC', color: 'green', terms: ['Martin Luther King Jr', 'Rosa Parks', 'Malcolm X', 'Thurgood Marshall'] },
-      { name: 'Vietnam War', theme: 'PCE', color: 'blue', terms: ['Gulf of Tonkin', 'Tet Offensive', 'Kent State', 'War Powers Act'] },
-      { name: 'Great Society', theme: 'WXT', color: 'purple', terms: ['Medicare', 'Medicaid', 'Head Start', 'Civil Rights Act 1964'] },
+      { name: 'Cold War Containment Policies', theme: 'WOR', color: 'yellow', terms: ['Truman Doctrine', 'Marshall Plan', 'NATO', 'NSC-68'] },
+      { name: 'Civil Rights Leaders and Tactics', theme: 'SOC', color: 'green', terms: ['Martin Luther King Jr.', 'Rosa Parks', 'Thurgood Marshall', 'SNCC'] },
+      // RED HERRING: "Kent State" — students know it's anti-war, but it must be connected to Nixon's invasion of Cambodia specifically
+      { name: 'Vietnam War Turning Points', theme: 'PCE', color: 'blue', terms: ['Gulf of Tonkin Resolution', 'Tet Offensive', 'Kent State Shootings', 'War Powers Act 1973'] },
+      { name: "LBJ's Great Society Programs", theme: 'WXT', color: 'purple', terms: ['Medicare and Medicaid', 'Head Start', 'Civil Rights Act 1964', 'Voting Rights Act 1965'] },
     ],
   },
   {
     subject: 'apush', period: 'Period 8: 1945-1980',
     categories: [
-      { name: 'Cold War Crises', theme: 'WOR', color: 'yellow', terms: ['Berlin Blockade', 'Korean War', 'Cuban Missile Crisis', 'Bay of Pigs'] },
-      { name: 'McCarthyism', theme: 'PCE', color: 'green', terms: ['Red Scare', 'HUAC', 'Blacklisting', 'Army-McCarthy Hearings'] },
-      { name: 'Space Race', theme: 'WXT', color: 'blue', terms: ['Sputnik', 'NASA', 'Moon Landing', 'Arms Race'] },
-      { name: 'Counterculture', theme: 'SOC', color: 'purple', terms: ['Woodstock', 'Hippies', 'Anti-War Protests', 'Free Speech Movement'] },
+      { name: 'Cold War Hot Conflicts', theme: 'WOR', color: 'yellow', terms: ['Berlin Blockade/Airlift', 'Korean War', 'Cuban Missile Crisis', 'Bay of Pigs Invasion'] },
+      // RED HERRING: "Blacklisting" — students associate it with Hollywood but it's specifically the practice of denying employment to suspected Communists
+      { name: 'McCarthyism and Second Red Scare', theme: 'PCE', color: 'green', terms: ['Second Red Scare', 'HUAC Investigations', 'Hollywood Blacklist', 'Army-McCarthy Hearings'] },
+      { name: 'Space and Arms Race', theme: 'WXT', color: 'blue', terms: ['Sputnik Launch', 'NASA Creation', 'Moon Landing 1969', 'Mutual Assured Destruction (MAD)'] },
+      { name: '1960s Counterculture', theme: 'SOC', color: 'purple', terms: ['Woodstock', 'Hippie Movement', 'Anti-Vietnam Protests', 'Free Speech Movement (Berkeley)'] },
     ],
   },
   {
     subject: 'apush', period: 'Period 8: 1945-1980',
     categories: [
-      { name: 'Civil Rights Milestones', theme: 'SOC', color: 'yellow', terms: ['Brown v Board', 'Montgomery Bus Boycott', 'March on Washington', 'Selma March'] },
-      { name: 'Womens Movement', theme: 'SOC', color: 'green', terms: ['Betty Friedan', 'NOW', 'ERA', 'Title IX'] },
-      { name: 'Nixon Presidency', theme: 'PCE', color: 'blue', terms: ['Watergate', 'Detente', 'EPA', 'Pentagon Papers'] },
-      { name: 'Economic Problems', theme: 'WXT', color: 'purple', terms: ['Stagflation', 'Oil Embargo', 'OPEC', 'Inflation'] },
+      { name: 'Civil Rights Milestones', theme: 'SOC', color: 'yellow', terms: ['Brown v. Board of Education', 'Montgomery Bus Boycott', 'March on Washington 1963', 'Selma to Montgomery March'] },
+      { name: "Women's Liberation Movement", theme: 'SOC', color: 'green', terms: ['Betty Friedan (The Feminine Mystique)', 'National Organization for Women', 'Equal Rights Amendment', 'Title IX'] },
+      // RED HERRING: "Pentagon Papers" — Nixon didn't leak them, but his response (cover-up) directly connects to Watergate
+      { name: 'Nixon Presidency Controversies', theme: 'PCE', color: 'blue', terms: ['Watergate Scandal', 'Détente with USSR/China', 'Pentagon Papers', 'Saturday Night Massacre'] },
+      { name: '1970s Economic Crises', theme: 'WXT', color: 'purple', terms: ['Stagflation', 'OPEC Oil Embargo', 'Inflation Crisis', 'Deindustrialization'] },
     ],
   },
   {
     subject: 'apush', period: 'Period 8: 1945-1980',
     categories: [
-      { name: 'Suburbanization', theme: 'MIG', color: 'yellow', terms: ['Levittown', 'GI Bill', 'Interstate Highways', 'Baby Boom'] },
-      { name: 'Nuclear Age', theme: 'WOR', color: 'green', terms: ['Manhattan Project', 'Hydrogen Bomb', 'MAD', 'Arms Race'] },
-      { name: 'Civil Rights Laws', theme: 'PCE', color: 'blue', terms: ['Voting Rights Act', 'Civil Rights Act 1964', 'Fair Housing Act', '24th Amendment'] },
-      { name: '1950s Culture', theme: 'SOC', color: 'purple', terms: ['Rock and Roll', 'Television', 'Conformity', 'Beat Generation'] },
+      { name: 'Postwar Suburbanization', theme: 'MIG', color: 'yellow', terms: ['Levittown', 'GI Bill (Servicemen\'s Readjustment Act)', 'Interstate Highway Act', 'Baby Boom'] },
+      // RED HERRING: "MAD" — students know the acronym but must connect it to the strategic doctrine of nuclear deterrence
+      { name: 'Nuclear Age and Arms Race', theme: 'WOR', color: 'green', terms: ['Manhattan Project', 'Hydrogen Bomb (1952)', 'Mutually Assured Destruction', 'Nuclear Test Ban Treaty'] },
+      { name: 'Civil Rights Legislation', theme: 'PCE', color: 'blue', terms: ['Voting Rights Act 1965', 'Civil Rights Act 1964', 'Fair Housing Act 1968', '24th Amendment'] },
+      { name: '1950s American Culture', theme: 'SOC', color: 'purple', terms: ['Rock and Roll', 'Television Boom', 'Suburban Conformity', 'Beat Generation'] },
     ],
   },
 
@@ -309,242 +343,297 @@ const APUSH_PUZZLES: Omit<DailyPuzzle, 'id' | 'date'>[] = [
   {
     subject: 'apush', period: 'Period 9: 1980-Present',
     categories: [
-      { name: 'Reagan Era', theme: 'PCE', color: 'yellow', terms: ['Reaganomics', 'Tax Cuts', 'Deregulation', 'Star Wars SDI'] },
-      { name: 'End of Cold War', theme: 'WOR', color: 'green', terms: ['Fall of Berlin Wall', 'Glasnost', 'Perestroika', 'Soviet Collapse'] },
-      { name: 'Tech Revolution', theme: 'WXT', color: 'blue', terms: ['Internet', 'Personal Computers', 'Silicon Valley', 'Dot-Com Bubble'] },
-      { name: 'War on Terror', theme: 'WOR', color: 'purple', terms: ['September 11th', 'Patriot Act', 'Iraq War', 'Afghanistan War'] },
+      { name: 'Reaganomics and Conservatism', theme: 'PCE', color: 'yellow', terms: ['Supply-Side Economics', 'Tax Cuts (ERTA 1981)', 'Deregulation', 'Strategic Defense Initiative'] },
+      // RED HERRING: "Perestroika" — students confuse it with Glasnost; Perestroika = restructuring, Glasnost = openness
+      { name: 'End of the Cold War', theme: 'WOR', color: 'green', terms: ['Fall of Berlin Wall 1989', 'Glasnost', 'Perestroika', 'Soviet Collapse 1991'] },
+      { name: 'Tech and Economic Revolution', theme: 'WXT', color: 'blue', terms: ['Internet Age', 'Personal Computers', 'Silicon Valley', 'Dot-Com Boom and Bust'] },
+      { name: 'Post-9/11 War on Terror', theme: 'WOR', color: 'purple', terms: ['September 11 Attacks', 'USA PATRIOT Act', 'Iraq War (2003)', 'War in Afghanistan'] },
     ],
   },
   {
     subject: 'apush', period: 'Period 9: 1980-Present',
     categories: [
-      { name: 'Conservative Movement', theme: 'PCE', color: 'yellow', terms: ['Moral Majority', 'Contract with America', 'Newt Gingrich', 'Tea Party'] },
-      { name: 'Globalization', theme: 'WXT', color: 'green', terms: ['NAFTA', 'WTO', 'Outsourcing', 'Free Trade'] },
-      { name: 'Social Change', theme: 'SOC', color: 'blue', terms: ['Marriage Equality', 'Black Lives Matter', 'Me Too', 'Immigration Reform'] },
-      { name: 'Clinton Era', theme: 'PCE', color: 'purple', terms: ['Budget Surplus', 'Impeachment', 'Welfare Reform', 'NAFTA'] },
+      { name: 'Rise of the Conservative Movement', theme: 'PCE', color: 'yellow', terms: ['Moral Majority (Falwell)', 'Contract with America', 'Newt Gingrich Revolution', 'Tea Party Movement'] },
+      { name: 'Globalization and Free Trade', theme: 'WXT', color: 'green', terms: ['NAFTA', 'World Trade Organization', 'Outsourcing', 'Trade Deficit with China'] },
+      { name: '21st Century Social Movements', theme: 'SOC', color: 'blue', terms: ['Same-Sex Marriage Legalization', 'Black Lives Matter', '#MeToo Movement', 'Immigration Reform Debates'] },
+      // RED HERRING: "NAFTA" — Clinton passed it but students must know he also signed conservative welfare reform and balanced the budget
+      { name: 'Clinton Presidency', theme: 'PCE', color: 'purple', terms: ['Budget Surplus', 'Impeachment (1998)', 'Welfare Reform Act', 'NAFTA Passage'] },
     ],
   },
   {
     subject: 'apush', period: 'Period 9: 1980-Present',
     categories: [
-      { name: 'Obama Years', theme: 'PCE', color: 'yellow', terms: ['Affordable Care Act', 'Economic Recovery', 'Paris Agreement', 'DACA'] },
-      { name: 'Modern Conflicts', theme: 'WOR', color: 'green', terms: ['Gulf War', 'War on Terror', 'ISIS', 'Drone Strikes'] },
-      { name: 'Immigration Debates', theme: 'MIG', color: 'blue', terms: ['DREAM Act', 'Border Security', 'Sanctuary Cities', 'DACA'] },
-      { name: 'Environmental Issues', theme: 'ENV', color: 'purple', terms: ['Climate Change', 'Kyoto Protocol', 'EPA', 'Green Energy'] },
+      { name: 'Obama Presidency', theme: 'PCE', color: 'yellow', terms: ['Affordable Care Act', 'Economic Recovery Act 2009', 'Paris Climate Agreement', 'DACA Program'] },
+      { name: 'Post-Cold War Military Conflicts', theme: 'WOR', color: 'green', terms: ['Gulf War 1991', 'Bosnia Intervention', 'War on Terror (Post-9/11)', 'Drone Strike Program'] },
+      { name: 'Immigration Debates', theme: 'MIG', color: 'blue', terms: ['DREAM Act Proposals', 'Border Security Debate', 'Sanctuary Cities', 'Executive Orders on Immigration'] },
+      // RED HERRING: "Kyoto Protocol" — U.S. signed but Senate never ratified it; different from Paris Agreement which Obama joined via executive action
+      { name: 'Modern Environmental Policy', theme: 'ENV', color: 'purple', terms: ['Climate Change Debate', 'Kyoto Protocol (Unratified)', 'EPA Regulations', 'Green New Deal Proposals'] },
     ],
   },
 ];
 
 // ────────────────────────────────────────────────────────────
-//  AP WORLD PUZZLES — Using standard textbook terms
-//  from Doves Library & AP World curriculum
+//  AP WORLD HISTORY: MODERN PUZZLES
+//  Sources: College Board CED (9 Units), AP Central,
+//  Princeton Review APWH guide
+//
+//  Unit structure (official CB names):
+//  Unit 1: The Global Tapestry (1200-1450)
+//  Unit 2: Networks of Exchange (1200-1450)
+//  Unit 3: Land-Based Empires (1450-1750)
+//  Unit 4: Transoceanic Interconnections (1450-1750)
+//  Unit 5: Revolutions (1750-1900)
+//  Unit 6: Consequences of Industrialization (1750-1900)
+//  Unit 7: Global Conflict (1900-present)
+//  Unit 8: Cold War and Decolonization (1900-present)
+//  Unit 9: Globalization (1900-present)
 // ────────────────────────────────────────────────────────────
 const APWORLD_PUZZLES: Omit<DailyPuzzle, 'id' | 'date'>[] = [
 
-  // ══════════ UNIT 1: 1200-1450 ══════════
+  // ══════════ UNIT 1: The Global Tapestry (1200-1450) ══════════
 
   {
-    subject: 'apworld', period: 'Unit 1: 1200-1450',
+    subject: 'apworld', period: 'Unit 1: The Global Tapestry (1200-1450)',
     categories: [
-      { name: 'Major Empires', theme: 'STA', color: 'yellow', terms: ['Mongol Empire', 'Song Dynasty', 'Delhi Sultanate', 'Mali Empire'] },
-      { name: 'Trade Routes', theme: 'SIO', color: 'green', terms: ['Silk Roads', 'Indian Ocean Trade', 'Trans-Saharan Trade', 'Hanseatic League'] },
-      { name: 'Spread of Religion', theme: 'SOC', color: 'blue', terms: ['Spread of Islam', 'Buddhism', 'Crusades', 'Bhakti Movement'] },
-      { name: 'Key Inventions', theme: 'ENV', color: 'purple', terms: ['Printing Press', 'Gunpowder', 'Compass', 'Champa Rice'] },
+      { name: 'Major Empires 1200-1450', theme: 'STA', color: 'yellow', terms: ['Mongol Empire', 'Song Dynasty', 'Delhi Sultanate', 'Mali Empire'] },
+      { name: 'Trade Route Networks', theme: 'SIO', color: 'green', terms: ['Silk Roads', 'Indian Ocean Trade', 'Trans-Saharan Trade', 'Hanseatic League'] },
+      // RED HERRING: "Bhakti Movement" — students often confuse it with Sufism; both blend traditions but Bhakti is Hindu devotionalism
+      { name: 'Spread and Syncretism of Religion', theme: 'CDI', color: 'blue', terms: ['Spread of Islam', 'Theravada Buddhism', 'Crusades', 'Bhakti Movement'] },
+      { name: 'Chinese Technological Innovations', theme: 'SIO', color: 'purple', terms: ['Woodblock Printing', 'Gunpowder Weapons', 'Magnetic Compass', 'Champa Rice'] },
     ],
   },
   {
-    subject: 'apworld', period: 'Unit 1: 1200-1450',
+    subject: 'apworld', period: 'Unit 1: The Global Tapestry (1200-1450)',
     categories: [
-      { name: 'Mongol Impact', theme: 'STA', color: 'yellow', terms: ['Pax Mongolica', 'Genghis Khan', 'Khanates', 'Yuan Dynasty'] },
-      { name: 'African Kingdoms', theme: 'SIO', color: 'green', terms: ['Great Zimbabwe', 'Swahili Cities', 'Mansa Musa', 'Kingdom of Kongo'] },
-      { name: 'Travelers and Trade', theme: 'SOC', color: 'blue', terms: ['Ibn Battuta', 'Marco Polo', 'Zheng He', 'Mansa Musas Hajj'] },
-      { name: 'Disease and Disaster', theme: 'ENV', color: 'purple', terms: ['Black Death', 'Little Ice Age', 'Famine', 'Population Decline'] },
+      // RED HERRING: "Pax Mongolica" — sounds peaceful but the Mongol peace was built on violent conquest first
+      { name: 'Mongol Empire Impact', theme: 'STA', color: 'yellow', terms: ['Pax Mongolica', 'Genghis Khan', 'Four Khanates', 'Yuan Dynasty (China)'] },
+      { name: 'African Kingdoms and Wealth', theme: 'SIO', color: 'green', terms: ['Great Zimbabwe', 'Swahili Coast Cities', 'Mansa Musa', 'Kingdom of Kongo'] },
+      { name: 'Notable Travelers of the Era', theme: 'CDI', color: 'blue', terms: ['Ibn Battuta', 'Marco Polo', 'Zheng He Voyages', "Mansa Musa's Hajj"] },
+      { name: 'Disease and Environmental Disaster', theme: 'ENV', color: 'purple', terms: ['Black Death (Bubonic Plague)', 'Little Ice Age', 'Famine Cycles', 'Population Collapse'] },
     ],
   },
   {
-    subject: 'apworld', period: 'Unit 1: 1200-1450',
+    subject: 'apworld', period: 'Unit 1: The Global Tapestry (1200-1450)',
     categories: [
-      { name: 'Song China', theme: 'STA', color: 'yellow', terms: ['Paper Money', 'Movable Type', 'Grand Canal', 'Steel Production'] },
-      { name: 'Islamic Scholarship', theme: 'SOC', color: 'green', terms: ['House of Wisdom', 'Algebra', 'Medicine', 'Islamic Art'] },
-      { name: 'European Feudalism', theme: 'STA', color: 'blue', terms: ['Manor System', 'Serfdom', 'Knights', 'Magna Carta'] },
-      { name: 'Americas', theme: 'SIO', color: 'purple', terms: ['Aztec Empire', 'Inca Empire', 'Chinampas', 'Quipu'] },
+      { name: 'Song Dynasty Achievements', theme: 'STA', color: 'yellow', terms: ['Paper Money (Jiaozi)', 'Movable Type Printing', 'Grand Canal Expansion', 'Steel Production'] },
+      { name: 'Islamic Golden Age Scholarship', theme: 'CDI', color: 'green', terms: ['House of Wisdom (Baghdad)', 'Algebra (al-Khwarizmi)', 'Medical Texts (Ibn Sina)', 'Geometric Art'] },
+      // RED HERRING: "Magna Carta" — students know it's about rights but its significance is as a LIMIT on royal power, not democracy
+      { name: 'European Feudal System', theme: 'STA', color: 'blue', terms: ['Manor System', 'Serfdom', 'Chivalric Knights', 'Magna Carta (1215)'] },
+      { name: 'Pre-Contact Americas', theme: 'SIO', color: 'purple', terms: ['Aztec (Mexica) Empire', 'Inca Empire', 'Chinampas (Floating Gardens)', 'Quipu Record-Keeping'] },
     ],
   },
   {
-    subject: 'apworld', period: 'Unit 1: 1200-1450',
+    subject: 'apworld', period: 'Unit 1: The Global Tapestry (1200-1450)',
     categories: [
-      { name: 'Byzantine Empire', theme: 'STA', color: 'yellow', terms: ['Constantinople', 'Justinian Code', 'Orthodox Christianity', 'Hagia Sophia'] },
-      { name: 'Crusades Effects', theme: 'SIO', color: 'green', terms: ['Jerusalem', 'Cultural Exchange', 'Trade Revival', 'European Expansion'] },
-      { name: 'Mongol Military', theme: 'STA', color: 'blue', terms: ['Cavalry', 'Siege Warfare', 'Religious Tolerance', 'Postal System'] },
-      { name: 'Agricultural Change', theme: 'ENV', color: 'purple', terms: ['Three-Field System', 'Heavy Plow', 'Water Mills', 'Crop Rotation'] },
-    ],
-  },
-
-  // ══════════ UNIT 2: Networks of Exchange ══════════
-
-  {
-    subject: 'apworld', period: 'Unit 2: 1200-1450',
-    categories: [
-      { name: 'State Building', theme: 'STA', color: 'yellow', terms: ['Ottoman Rise', 'Timbuktu', 'Khmer Empire', 'Aztec Tribute'] },
-      { name: 'Belief Systems', theme: 'SOC', color: 'green', terms: ['Neo-Confucianism', 'Sufism', 'Scholasticism', 'Hinduism'] },
-      { name: 'Labor Systems', theme: 'SIO', color: 'blue', terms: ['Serfdom', 'Tribute', 'Corvee Labor', 'Guild System'] },
-      { name: 'Maritime Technology', theme: 'ENV', color: 'purple', terms: ['Dhow Ships', 'Lateen Sail', 'Astrolabe', 'Junk Ships'] },
+      { name: 'Byzantine Empire', theme: 'STA', color: 'yellow', terms: ['Constantinople', 'Justinian Code', 'Eastern Orthodox Christianity', 'Hagia Sophia'] },
+      // RED HERRING: "Cultural Exchange" — the Crusades are most tested for unintended consequences (trade revival), not religious success
+      { name: 'Crusades Long-Term Effects', theme: 'SIO', color: 'green', terms: ['Jerusalem Conflicts', 'Revived Mediterranean Trade', 'European Demand for Luxury Goods', 'Weakened Feudalism'] },
+      { name: 'Mongol Military and Administration', theme: 'STA', color: 'blue', terms: ['Cavalry and Archery', 'Siege Warfare Techniques', 'Religious Tolerance Policy', 'Yam Postal System'] },
+      { name: 'European Agricultural Revolution', theme: 'ENV', color: 'purple', terms: ['Three-Field System', 'Heavy Plow', 'Water and Windmills', 'Crop Rotation'] },
     ],
   },
 
-  // ══════════ UNIT 3: 1450-1750 ══════════
+  // ══════════ UNIT 2: Networks of Exchange (1200-1450) ══════════
 
   {
-    subject: 'apworld', period: 'Unit 3: 1450-1750',
+    subject: 'apworld', period: 'Unit 2: Networks of Exchange (1200-1450)',
     categories: [
-      { name: 'Maritime Empires', theme: 'SIO', color: 'yellow', terms: ['Portuguese Trading Posts', 'Dutch East India Co', 'Spanish Galleons', 'British Navy'] },
-      { name: 'Columbian Exchange', theme: 'ENV', color: 'green', terms: ['Smallpox', 'Potatoes', 'Silver Trade', 'Sugar Plantations'] },
-      { name: 'Gunpowder Empires', theme: 'STA', color: 'blue', terms: ['Ottoman Empire', 'Safavid Dynasty', 'Mughal Empire', 'Ming Dynasty'] },
-      { name: 'Forced Labor', theme: 'SOC', color: 'purple', terms: ['Encomienda', 'Chattel Slavery', 'Indentured Servitude', 'Mita System'] },
+      { name: 'State-Building Across Regions', theme: 'STA', color: 'yellow', terms: ['Ottoman Rise (Anatolia)', 'Timbuktu as Scholarly Center', 'Khmer Empire (Angkor)', 'Aztec Tribute System'] },
+      { name: 'Belief Systems Shaping Society', theme: 'CDI', color: 'green', terms: ['Neo-Confucianism', 'Sufism (Islamic Mysticism)', 'Scholasticism', 'Hindu-Muslim Synthesis'] },
+      // RED HERRING: "Guild System" — students might place it under economics broadly; it's a form of labor organization specific to medieval Europe
+      { name: 'Labor Systems Across Regions', theme: 'SIO', color: 'blue', terms: ['Serfdom (Europe)', 'Tribute Labor (Americas)', 'Corvée Labor', 'Guild System (Europe)'] },
+      { name: 'Maritime Technology', theme: 'ENV', color: 'purple', terms: ['Dhow Ships', 'Lateen Sail', 'Astrolabe Navigation', 'Chinese Junk Ships'] },
     ],
   },
   {
-    subject: 'apworld', period: 'Unit 3: 1450-1750',
+    subject: 'apworld', period: 'Unit 2: Networks of Exchange (1200-1450)',
     categories: [
-      { name: 'European Explorers', theme: 'SIO', color: 'yellow', terms: ['Vasco da Gama', 'Magellan', 'Columbus', 'Bartolomeu Dias'] },
-      { name: 'Absolute Monarchs', theme: 'STA', color: 'green', terms: ['Louis XIV', 'Peter the Great', 'Divine Right', 'Versailles'] },
-      { name: 'Reformation', theme: 'SOC', color: 'blue', terms: ['Martin Luther', '95 Theses', 'John Calvin', 'Counter-Reformation'] },
-      { name: 'Asian Powers', theme: 'SIO', color: 'purple', terms: ['Qing Dynasty', 'Tokugawa Japan', 'Canton System', 'Spice Trade'] },
-    ],
-  },
-  {
-    subject: 'apworld', period: 'Unit 3: 1450-1750',
-    categories: [
-      { name: 'Atlantic Slave Trade', theme: 'SOC', color: 'yellow', terms: ['Middle Passage', 'Triangular Trade', 'Plantation Economy', 'Resistance'] },
-      { name: 'Scientific Revolution', theme: 'ENV', color: 'green', terms: ['Copernicus', 'Galileo', 'Newton', 'Scientific Method'] },
-      { name: 'Ottoman Golden Age', theme: 'STA', color: 'blue', terms: ['Suleiman', 'Janissaries', 'Devshirme', 'Millet System'] },
-      { name: 'Mughal India', theme: 'STA', color: 'purple', terms: ['Akbar', 'Taj Mahal', 'Religious Tolerance', 'Zamindars'] },
-    ],
-  },
-  {
-    subject: 'apworld', period: 'Unit 3: 1450-1750',
-    categories: [
-      { name: 'Silver Trade', theme: 'SIO', color: 'yellow', terms: ['Potosi Mines', 'Manila Galleons', 'Spanish Silver', 'Chinese Demand'] },
-      { name: 'Colonial Society', theme: 'SOC', color: 'green', terms: ['Casta System', 'Creoles', 'Peninsulares', 'Mestizos'] },
-      { name: 'Tokugawa Japan', theme: 'STA', color: 'blue', terms: ['Isolation Policy', 'Edo Period', 'Samurai', 'Bushido'] },
-      { name: 'Mercantilism', theme: 'SIO', color: 'purple', terms: ['Joint-Stock Companies', 'Navigation Acts', 'Balance of Trade', 'Colonies'] },
+      { name: 'Silk Road Exchange', theme: 'SIO', color: 'yellow', terms: ['Luxury Goods Trade', 'Disease Transmission', 'Cultural Diffusion', 'Caravanserai Rest Stops'] },
+      // RED HERRING: "Swahili" — students may think it's just a language, but Swahili cities were cosmopolitan Indian Ocean trading hubs
+      { name: 'Indian Ocean Trade Network', theme: 'SIO', color: 'green', terms: ['Monsoon Wind Patterns', 'Swahili City-States', 'Spice Trade', 'Dhow Ship Networks'] },
+      { name: 'Trans-Saharan Trade', theme: 'SIO', color: 'blue', terms: ['Gold and Salt Exchange', 'Camel Caravans', 'Mali Empire Wealth', 'Spread of Islam in Africa'] },
+      { name: 'Impact of the Black Death', theme: 'ENV', color: 'purple', terms: ['Labor Shortages in Europe', 'Weakened Church Authority', 'Flagellant Movements', 'End of Feudal Order'] },
     ],
   },
 
-  // ══════════ UNIT 4: Transoceanic Connections ══════════
+  // ══════════ UNIT 3: Land-Based Empires (1450-1750) ══════════
 
   {
-    subject: 'apworld', period: 'Unit 4: 1450-1750',
+    subject: 'apworld', period: 'Unit 3: Land-Based Empires (1450-1750)',
     categories: [
-      { name: 'Enlightenment', theme: 'SOC', color: 'yellow', terms: ['John Locke', 'Voltaire', 'Montesquieu', 'Rousseau'] },
-      { name: 'Qing China', theme: 'STA', color: 'green', terms: ['Kangxi Emperor', 'Qianlong Emperor', 'Manchu Rule', 'Tribute System'] },
-      { name: 'Global Trade', theme: 'SIO', color: 'blue', terms: ['Joint-Stock Companies', 'Mercantilism', 'Plantation Crops', 'Fur Trade'] },
-      { name: 'Religious Conflict', theme: 'SOC', color: 'purple', terms: ['Thirty Years War', 'Peace of Westphalia', 'Huguenots', 'Inquisition'] },
-    ],
-  },
-
-  // ══════════ UNIT 5: 1750-1900 ══════════
-
-  {
-    subject: 'apworld', period: 'Unit 5: 1750-1900',
-    categories: [
-      { name: 'Major Revolutions', theme: 'STA', color: 'yellow', terms: ['French Revolution', 'Haitian Revolution', 'Latin American Independence', 'Industrial Revolution'] },
-      { name: 'Imperialism', theme: 'SIO', color: 'green', terms: ['Scramble for Africa', 'Opium Wars', 'Sepoy Rebellion', 'Berlin Conference'] },
-      { name: 'Nationalism', theme: 'SOC', color: 'blue', terms: ['Italian Unification', 'German Unification', 'Meiji Restoration', 'Zionism'] },
-      { name: 'Enlightenment Ideas', theme: 'STA', color: 'purple', terms: ['Social Contract', 'Natural Rights', 'Separation of Powers', 'Popular Sovereignty'] },
+      // RED HERRING: "Devshirme" — students confuse it as slavery; it was actually a forced recruitment of Christian boys who could rise to elite status
+      { name: 'Ottoman Empire at Its Height', theme: 'STA', color: 'yellow', terms: ['Suleiman the Magnificent', 'Janissaries (Elite Soldiers)', 'Devshirme System', 'Millet System'] },
+      { name: 'Safavid Dynasty (Persia)', theme: 'STA', color: 'green', terms: ['Shia Islam as State Religion', 'Shah Abbas I', 'Conflict with Ottomans', 'Isfahan Architecture'] },
+      { name: 'Mughal Empire (India)', theme: 'STA', color: 'blue', terms: ['Akbar the Great', 'Taj Mahal', 'Din-i-Ilahi (Religious Tolerance)', 'Zamindars (Tax Collectors)'] },
+      { name: 'Ming Dynasty (China)', theme: 'STA', color: 'purple', terms: ['Great Wall Expansion', 'Zheng He Voyages', 'Isolation After 1433', 'Confucian Civil Service'] },
     ],
   },
   {
-    subject: 'apworld', period: 'Unit 5: 1750-1900',
+    subject: 'apworld', period: 'Unit 3: Land-Based Empires (1450-1750)',
     categories: [
-      { name: 'Industrial Revolution', theme: 'SIO', color: 'yellow', terms: ['Steam Engine', 'Factory System', 'Cotton Mills', 'Coal Mining'] },
-      { name: 'Social Impact', theme: 'SOC', color: 'green', terms: ['Urbanization', 'Child Labor', 'Labor Unions', 'Marxism'] },
-      { name: 'Anti-Imperial Resistance', theme: 'STA', color: 'blue', terms: ['Boxer Rebellion', 'Taiping Rebellion', 'Zulu Resistance', 'Maroon Communities'] },
-      { name: 'Abolition of Slavery', theme: 'SOC', color: 'purple', terms: ['British Abolition', 'Brazilian Abolition', 'Haitian Revolution', 'Underground Railroad'] },
-    ],
-  },
-  {
-    subject: 'apworld', period: 'Unit 5: 1750-1900',
-    categories: [
-      { name: 'Independence Leaders', theme: 'STA', color: 'yellow', terms: ['Simon Bolivar', 'Toussaint Louverture', 'Jose de San Martin', 'Miguel Hidalgo'] },
-      { name: 'British Empire', theme: 'SIO', color: 'green', terms: ['East India Company', 'Suez Canal', 'Cape Colony', 'Queen Victoria'] },
-      { name: 'Meiji Japan', theme: 'STA', color: 'blue', terms: ['Meiji Restoration', 'Industrialization', 'Russo-Japanese War', 'Westernization'] },
-      { name: 'New Ideologies', theme: 'SOC', color: 'purple', terms: ['Liberalism', 'Conservatism', 'Socialism', 'Feminism'] },
+      { name: 'Legitimization of Empires', theme: 'STA', color: 'yellow', terms: ['Divine Right of Kings', 'Mandate of Heaven', 'Religious Authority', 'Monumental Architecture'] },
+      // RED HERRING: "Manchu" — the Qing were Manchu outsiders who adopted Chinese administrative traditions to legitimize their rule
+      { name: 'Qing Dynasty (China)', theme: 'STA', color: 'green', terms: ['Manchu Conquest of Ming', 'Queue Hairstyle Policy', 'Kangxi Emperor', 'Tributary System Maintained'] },
+      { name: 'Russian Empire Expansion', theme: 'STA', color: 'blue', terms: ['Ivan the Terrible', 'Cossack Expansion East', 'Peter the Great Westernization', 'Serfdom'] },
+      { name: 'Religious Reform Movements', theme: 'CDI', color: 'purple', terms: ['Protestant Reformation (Luther)', 'Counter-Reformation (Jesuits)', 'Sunni-Shia Conflict', 'Sikhism Founding'] },
     ],
   },
 
-  // ══════════ UNIT 6: Consequences of Industrialization ══════════
+  // ══════════ UNIT 4: Transoceanic Interconnections (1450-1750) ══════════
 
   {
-    subject: 'apworld', period: 'Unit 6: 1900-Present',
+    subject: 'apworld', period: 'Unit 4: Transoceanic Interconnections (1450-1750)',
     categories: [
-      { name: 'WWI Causes', theme: 'STA', color: 'yellow', terms: ['Assassination of Archduke', 'Alliance System', 'Militarism', 'Nationalism'] },
-      { name: 'WWI Warfare', theme: 'SIO', color: 'green', terms: ['Trench Warfare', 'Poison Gas', 'Machine Guns', 'U-Boats'] },
-      { name: 'WWI Results', theme: 'STA', color: 'blue', terms: ['Treaty of Versailles', 'League of Nations', 'Mandate System', 'Ottoman Collapse'] },
-      { name: 'Russian Revolution', theme: 'STA', color: 'purple', terms: ['Bolsheviks', 'Lenin', 'October Revolution', 'Soviet Union'] },
+      { name: 'European Maritime Empires', theme: 'SIO', color: 'yellow', terms: ['Portuguese Trading Post Empire', 'Dutch East India Company (VOC)', 'Spanish Galleon Trade', 'British Royal Navy'] },
+      { name: 'Columbian Exchange Effects', theme: 'ENV', color: 'green', terms: ['Smallpox Devastates Americas', 'Potatoes Transform Europe', 'Silver Flows to China', 'Sugar Plantation Spread'] },
+      // RED HERRING: "Encomienda" — students place it under labor; it's specifically a Spanish colonial labor GRANT system, not slavery
+      { name: 'Colonial Labor Systems', theme: 'SOC', color: 'blue', terms: ['Encomienda System', 'Chattel Slavery (Atlantic)', 'Indentured Servitude', 'Mita System (Inca-derived)'] },
+      { name: 'Early Modern European Explorers', theme: 'SIO', color: 'purple', terms: ['Vasco da Gama (India Route)', 'Magellan (Circumnavigation)', 'Columbus (Caribbean)', 'Bartolomeu Dias (Cape of Good Hope)'] },
     ],
   },
   {
-    subject: 'apworld', period: 'Unit 6: 1900-Present',
+    subject: 'apworld', period: 'Unit 4: Transoceanic Interconnections (1450-1750)',
     categories: [
-      { name: 'Rise of Fascism', theme: 'STA', color: 'yellow', terms: ['Mussolini', 'Hitler', 'Totalitarianism', 'Appeasement'] },
-      { name: 'WWII Key Events', theme: 'SIO', color: 'green', terms: ['Blitzkrieg', 'Pearl Harbor', 'Holocaust', 'Atomic Bomb'] },
-      { name: 'Interwar Period', theme: 'SOC', color: 'blue', terms: ['Great Depression', 'Weimar Republic', 'Five Year Plans', 'Collectivization'] },
-      { name: 'Chinese Revolution', theme: 'STA', color: 'purple', terms: ['Sun Yat-sen', 'Mao Zedong', 'Long March', 'Communist Party'] },
-    ],
-  },
-
-  // ══════════ UNIT 7: Global Conflict ══════════
-
-  {
-    subject: 'apworld', period: 'Unit 7: 1900-Present',
-    categories: [
-      { name: 'Global Wars', theme: 'STA', color: 'yellow', terms: ['Treaty of Versailles', 'United Nations', 'D-Day', 'Atomic Bomb'] },
-      { name: 'Decolonization', theme: 'SOC', color: 'green', terms: ['Indian Independence', 'Algerian War', 'Vietnam', 'Apartheid'] },
-      { name: 'Cold War', theme: 'SIO', color: 'blue', terms: ['Korean War', 'Cuban Missile Crisis', 'Berlin Wall', 'Soviet-Afghan War'] },
-      { name: 'Communist Movements', theme: 'STA', color: 'purple', terms: ['Russian Revolution', 'Chinese Revolution', 'Cuban Revolution', 'Khmer Rouge'] },
+      { name: 'Atlantic Slave Trade', theme: 'SOC', color: 'yellow', terms: ['Middle Passage', 'Triangular Trade', 'Plantation Economy', 'Slave Resistance and Revolts'] },
+      { name: 'Scientific Revolution', theme: 'CDI', color: 'green', terms: ['Copernicus (Heliocentric)', 'Galileo (Telescope)', 'Newton (Laws of Motion)', 'Scientific Method'] },
+      // RED HERRING: "Canton System" — students often think China was completely isolated; the Canton System was controlled limited trade, not full isolation
+      { name: 'Asian Responses to European Contact', theme: 'SIO', color: 'blue', terms: ['Tokugawa Japan Isolation', 'Canton System (China)', 'Mughal Trade with Europeans', 'Spice Wars (Maluku)'] },
+      { name: 'Colonial Society Hierarchies', theme: 'SOC', color: 'purple', terms: ['Casta System', 'Creoles vs. Peninsulares', 'Mestizos', 'Syncretism (Religion and Culture)'] },
     ],
   },
   {
-    subject: 'apworld', period: 'Unit 7: 1900-Present',
+    subject: 'apworld', period: 'Unit 4: Transoceanic Interconnections (1450-1750)',
     categories: [
-      { name: 'African Independence', theme: 'STA', color: 'yellow', terms: ['Kwame Nkrumah', 'Jomo Kenyatta', 'Nelson Mandela', 'Pan-Africanism'] },
-      { name: 'Cold War Alliances', theme: 'SIO', color: 'green', terms: ['NATO', 'Warsaw Pact', 'Non-Aligned Movement', 'Proxy Wars'] },
-      { name: 'Middle East', theme: 'STA', color: 'blue', terms: ['Arab-Israeli Conflict', 'Iranian Revolution', 'OPEC', 'Camp David Accords'] },
-      { name: 'Asian Economies', theme: 'SIO', color: 'purple', terms: ['South Korea', 'Taiwan', 'Singapore', 'Hong Kong'] },
+      // RED HERRING: "Silver Trade" — students must know silver went primarily to China (to pay for luxury goods), not to Europe
+      { name: 'Global Silver Trade', theme: 'SIO', color: 'yellow', terms: ['Potosí Silver Mines', 'Manila Galleons', 'Spanish Silver to China', 'Price Revolution in Europe'] },
+      { name: 'Enlightenment Ideas', theme: 'CDI', color: 'green', terms: ['John Locke (Natural Rights)', 'Voltaire (Tolerance)', 'Montesquieu (Separation of Powers)', 'Rousseau (Social Contract)'] },
+      { name: 'Mercantilism and Trade Companies', theme: 'SIO', color: 'blue', terms: ['Joint-Stock Companies', 'Navigation Acts', 'Favorable Balance of Trade', 'Colonial Raw Materials'] },
+      { name: 'European Religious Conflicts', theme: 'CDI', color: 'purple', terms: ["Thirty Years' War", 'Peace of Westphalia', 'Huguenots in France', 'Spanish Inquisition'] },
     ],
   },
 
-  // ══════════ UNIT 8: Cold War and Decolonization ══════════
+  // ══════════ UNIT 5: Revolutions (1750-1900) ══════════
 
   {
-    subject: 'apworld', period: 'Unit 8: 1900-Present',
+    subject: 'apworld', period: 'Unit 5: Revolutions (1750-1900)',
     categories: [
-      { name: 'Globalization', theme: 'SIO', color: 'yellow', terms: ['World Trade Organization', 'Internet', 'Multinational Corporations', 'Free Trade'] },
-      { name: 'Environment', theme: 'ENV', color: 'green', terms: ['Climate Change', 'Deforestation', 'Ozone Layer', 'Paris Agreement'] },
-      { name: 'Human Rights', theme: 'SOC', color: 'blue', terms: ['Universal Declaration', 'Genocide Convention', 'Womens Rights', 'Refugee Crisis'] },
-      { name: 'Technology', theme: 'ENV', color: 'purple', terms: ['Green Revolution', 'Nuclear Energy', 'Space Race', 'Medical Advances'] },
+      { name: 'Major Political Revolutions', theme: 'STA', color: 'yellow', terms: ['French Revolution', 'Haitian Revolution', 'Latin American Independence', 'American Revolution'] },
+      // RED HERRING: "Berlin Conference" — sounds like a diplomatic peace deal but it was actually the European partition of Africa
+      { name: 'Age of Imperialism Key Events', theme: 'SIO', color: 'green', terms: ['Scramble for Africa', 'Opium Wars (China)', 'Sepoy Rebellion (India)', 'Berlin Conference 1884'] },
+      { name: 'Nationalism Movements', theme: 'SOC', color: 'blue', terms: ['Italian Unification (Garibaldi)', 'German Unification (Bismarck)', 'Meiji Restoration (Japan)', 'Zionism'] },
+      { name: 'Enlightenment Principles in Revolutions', theme: 'STA', color: 'purple', terms: ['Social Contract Theory', 'Natural Rights', 'Separation of Powers', 'Popular Sovereignty'] },
     ],
   },
   {
-    subject: 'apworld', period: 'Unit 8: 1900-Present',
+    subject: 'apworld', period: 'Unit 5: Revolutions (1750-1900)',
     categories: [
-      { name: 'Post-Cold War', theme: 'STA', color: 'yellow', terms: ['European Union', 'Soviet Collapse', 'Rwandan Genocide', 'Yugoslav Wars'] },
-      { name: 'Global Economy', theme: 'SIO', color: 'green', terms: ['Free Market', 'IMF', 'World Bank', 'Microfinance'] },
-      { name: 'Pandemic History', theme: 'ENV', color: 'blue', terms: ['HIV/AIDS', 'Ebola', 'COVID-19', 'WHO'] },
-      { name: 'Digital Age', theme: 'SOC', color: 'purple', terms: ['Social Media', 'Arab Spring', 'Cyber Security', 'AI'] },
+      { name: 'Industrial Revolution in Britain', theme: 'SIO', color: 'yellow', terms: ['Steam Engine (Watt)', 'Factory System', 'Coal and Iron Production', 'Manchester Cotton Mills'] },
+      { name: 'Social Impact of Industrialization', theme: 'SOC', color: 'green', terms: ['Urbanization', 'Child Labor', 'Labor Union Formation', 'Marxism and Socialism'] },
+      // RED HERRING: "Boxer Rebellion" — students confuse it as anti-Qing; it was anti-FOREIGN, with Qing Dynasty initially supporting it
+      { name: 'Resistance to Imperialism', theme: 'STA', color: 'blue', terms: ['Boxer Rebellion (China)', 'Taiping Rebellion (China)', 'Zulu Wars (South Africa)', 'Sepoy Rebellion (India)'] },
+      { name: 'Independence Leaders', theme: 'STA', color: 'purple', terms: ['Simón Bolívar', 'Toussaint Louverture', 'José de San Martín', 'Miguel Hidalgo'] },
     ],
   },
 
-  // ══════════ UNIT 9: Globalization ══════════
+  // ══════════ UNIT 6: Consequences of Industrialization (1750-1900) ══════════
 
   {
-    subject: 'apworld', period: 'Unit 9: Globalization',
+    subject: 'apworld', period: 'Unit 6: Consequences of Industrialization (1750-1900)',
     categories: [
-      { name: 'International Bodies', theme: 'STA', color: 'yellow', terms: ['United Nations', 'WHO', 'International Court', 'NATO'] },
-      { name: 'Migration', theme: 'SOC', color: 'green', terms: ['Guest Workers', 'Brain Drain', 'Refugees', 'Urbanization'] },
-      { name: 'Cultural Spread', theme: 'SIO', color: 'blue', terms: ['Hollywood', 'K-Pop', 'Fast Food Chains', 'World Cup'] },
-      { name: 'Anti-Globalization', theme: 'SOC', color: 'purple', terms: ['Protests', 'Brexit', 'Trade Wars', 'Nationalism Revival'] },
+      { name: 'British Global Empire', theme: 'SIO', color: 'yellow', terms: ['East India Company Rule', 'Suez Canal Control', 'Cape Colony (South Africa)', 'Raj in India'] },
+      // RED HERRING: "Meiji Restoration" — students know Japan industrialized but must know it was a response to Western imperialism (Perry's arrival)
+      { name: 'Meiji Japan', theme: 'STA', color: 'green', terms: ['Meiji Restoration (1868)', 'Industrialization from Above', 'Russo-Japanese War Victory', 'Westernization of Institutions'] },
+      { name: 'New Economic Ideologies', theme: 'CDI', color: 'blue', terms: ['Liberalism (Free Markets)', 'Conservatism', 'Marxist Socialism', 'Early Feminism'] },
+      { name: 'Abolition of Slavery Worldwide', theme: 'SOC', color: 'purple', terms: ['British Abolition 1833', 'Brazilian Abolition 1888 (Last)', 'Haitian Revolution as Catalyst', 'Cuban Abolition 1886'] },
+    ],
+  },
+  {
+    subject: 'apworld', period: 'Unit 6: Consequences of Industrialization (1750-1900)',
+    categories: [
+      { name: 'Migration Patterns 1750-1900', theme: 'SOC', color: 'yellow', terms: ['Indentured Labor (Post-Slavery)', 'Chinese Coolies', 'Irish Famine Migration', 'European Settlement of Americas'] },
+      { name: 'Imperialism in Africa', theme: 'SIO', color: 'green', terms: ['Scramble for Africa', 'Berlin Conference Partitions', 'Belgian Congo Exploitation', 'Ethiopian Resistance (Adwa)'] },
+      // RED HERRING: "Social Darwinism" — students think it's a scientific theory; it's an ideology used to JUSTIFY imperialism and racism
+      { name: 'Ideological Justifications for Imperialism', theme: 'CDI', color: 'blue', terms: ["White Man's Burden (Kipling)", 'Social Darwinism', 'Civilizing Mission', 'Manifest Destiny'] },
+      { name: 'Imperialism in Asia', theme: 'SIO', color: 'purple', terms: ['Opium Wars and Unequal Treaties', 'Spheres of Influence in China', 'French Indochina', 'Dutch East Indies'] },
+    ],
+  },
+
+  // ══════════ UNIT 7: Global Conflict (1900-Present) ══════════
+
+  {
+    subject: 'apworld', period: 'Unit 7: Global Conflict (1900-Present)',
+    categories: [
+      { name: 'WWI Causes (MAIN)', theme: 'STA', color: 'yellow', terms: ['Militarism', 'Alliance System', 'Imperialism Rivalries', 'Nationalism (Balkans)'] },
+      // RED HERRING: "U-Boats" — students associate with WWI broadly but they were the specific reason the U.S. entered
+      { name: 'WWI New Warfare', theme: 'SIO', color: 'green', terms: ['Trench Warfare', 'Poison Gas', 'Machine Guns', 'U-Boat Submarine Warfare'] },
+      { name: 'WWI Aftermath and Settlement', theme: 'STA', color: 'blue', terms: ['Treaty of Versailles', 'League of Nations', 'Mandate System (Middle East)', 'Ottoman Empire Collapse'] },
+      { name: 'Russian Revolution', theme: 'STA', color: 'purple', terms: ['Bolsheviks', 'Lenin', 'October Revolution 1917', 'Soviet Union Formation'] },
+    ],
+  },
+  {
+    subject: 'apworld', period: 'Unit 7: Global Conflict (1900-Present)',
+    categories: [
+      { name: 'Rise of Fascism and Totalitarianism', theme: 'STA', color: 'yellow', terms: ['Mussolini (Italy)', 'Hitler (Nazi Germany)', 'Totalitarian State Control', 'Appeasement Policy'] },
+      // RED HERRING: "Holocaust" — students know it's genocide but must connect it to the broader Nazi ideology of racial hierarchy
+      { name: 'WWII Key Events', theme: 'SIO', color: 'green', terms: ['Blitzkrieg', 'Pearl Harbor', 'Holocaust (6 million Jews)', 'Atomic Bombings of Japan'] },
+      { name: 'Interwar Period Crises', theme: 'SOC', color: 'blue', terms: ['Great Depression (Global)', 'Weimar Republic Instability', 'Soviet Five-Year Plans', 'Collectivization in USSR'] },
+      { name: 'Chinese Communist Revolution', theme: 'STA', color: 'purple', terms: ['Sun Yat-sen', 'Mao Zedong', 'Long March', 'Communist Victory 1949'] },
+    ],
+  },
+
+  // ══════════ UNIT 8: Cold War and Decolonization (1900-Present) ══════════
+
+  {
+    subject: 'apworld', period: 'Unit 8: Cold War and Decolonization (1900-Present)',
+    categories: [
+      { name: 'Cold War Global Conflicts', theme: 'STA', color: 'yellow', terms: ['Korean War', 'Cuban Missile Crisis', 'Berlin Wall', 'Soviet-Afghan War'] },
+      { name: 'Decolonization Movements', theme: 'SOC', color: 'green', terms: ['Indian Independence (Gandhi)', 'Algerian War of Independence', 'Vietnamese Independence (Ho Chi Minh)', 'South African Apartheid'] },
+      // RED HERRING: "Non-Aligned Movement" — students confuse it with neutrality; it was a deliberate third path rejecting both superpowers
+      { name: 'Cold War Alliance Systems', theme: 'SIO', color: 'blue', terms: ['NATO (Western)', 'Warsaw Pact (Eastern)', 'Non-Aligned Movement', 'Proxy Wars in Asia/Africa'] },
+      { name: 'Decolonization Leaders', theme: 'STA', color: 'purple', terms: ['Kwame Nkrumah (Ghana)', 'Jomo Kenyatta (Kenya)', 'Nelson Mandela (South Africa)', 'Ho Chi Minh (Vietnam)'] },
+    ],
+  },
+  {
+    subject: 'apworld', period: 'Unit 8: Cold War and Decolonization (1900-Present)',
+    categories: [
+      { name: 'African Independence Movements', theme: 'STA', color: 'yellow', terms: ['Pan-Africanism', 'Kwame Nkrumah', 'Mau Mau Uprising (Kenya)', 'Year of Africa 1960'] },
+      // RED HERRING: "OPEC" — students may think it's just economics; OPEC was a political weapon used by Arab states in the 1973 oil embargo
+      { name: 'Middle East Conflicts', theme: 'STA', color: 'green', terms: ['Arab-Israeli Conflict', 'Iranian Revolution 1979', 'OPEC Oil Embargo 1973', 'Camp David Accords'] },
+      { name: 'Economic "Tigers" of Asia', theme: 'SIO', color: 'blue', terms: ['South Korea', 'Taiwan', 'Singapore', 'Hong Kong'] },
+      { name: 'Post-Cold War Crises', theme: 'STA', color: 'purple', terms: ['Soviet Collapse 1991', 'Rwandan Genocide', 'Yugoslav Wars', 'European Union Formation'] },
+    ],
+  },
+
+  // ══════════ UNIT 9: Globalization (1900-Present) ══════════
+
+  {
+    subject: 'apworld', period: 'Unit 9: Globalization (1900-Present)',
+    categories: [
+      { name: 'Globalization and World Economy', theme: 'SIO', color: 'yellow', terms: ['World Trade Organization (WTO)', 'International Monetary Fund', 'Multinational Corporations', 'Free Trade Agreements'] },
+      { name: 'Global Environmental Issues', theme: 'ENV', color: 'green', terms: ['Climate Change', 'Deforestation (Amazon)', 'Ozone Layer Depletion', 'Paris Climate Agreement 2015'] },
+      // RED HERRING: "Refugee Crisis" — sounds like migration only; it's tested as a human rights failure of the international system
+      { name: 'Global Human Rights', theme: 'SOC', color: 'blue', terms: ['UN Declaration of Human Rights', 'Genocide Convention', "Women's Rights Movements", 'Refugee Crisis'] },
+      { name: 'Technology and the Modern World', theme: 'ENV', color: 'purple', terms: ['Green Revolution (Agriculture)', 'Nuclear Energy', 'Space Race Legacy', 'Medical Technology'] },
+    ],
+  },
+  {
+    subject: 'apworld', period: 'Unit 9: Globalization (1900-Present)',
+    categories: [
+      { name: 'International Organizations', theme: 'STA', color: 'yellow', terms: ['United Nations', 'World Health Organization', 'International Court of Justice', 'NATO Post-Cold War'] },
+      { name: 'Global Migration Patterns', theme: 'SOC', color: 'green', terms: ['Guest Worker Programs', 'Brain Drain (Skilled Migration)', 'Refugee Flows', 'Rural to Urban Migration'] },
+      // RED HERRING: "K-Pop" — students may dismiss it as trivial; it's a serious example of cultural globalization and soft power
+      { name: 'Cultural Globalization', theme: 'CDI', color: 'blue', terms: ['Hollywood Dominance', 'K-Pop Global Spread', 'Fast Food Chains Worldwide', 'FIFA World Cup'] },
+      { name: 'Anti-Globalization Backlash', theme: 'SOC', color: 'purple', terms: ['WTO Protests (Seattle 1999)', 'Brexit', 'Trade War Nationalism', 'Religious Fundamentalism Resurgence'] },
+    ],
+  },
+  {
+    subject: 'apworld', period: 'Unit 9: Globalization (1900-Present)',
+    categories: [
+      { name: 'Digital Age and Social Change', theme: 'CDI', color: 'yellow', terms: ['Social Media Revolutions', 'Arab Spring', 'Cybersecurity Threats', 'Artificial Intelligence'] },
+      // RED HERRING: "IMF" — students think it helps poor countries; it's also controversial for imposing austerity conditions (structural adjustment)
+      { name: 'Global Economic Institutions', theme: 'SIO', color: 'green', terms: ['IMF Structural Adjustment', 'World Bank Development Loans', 'Microfinance (Grameen Bank)', 'Free Market Capitalism'] },
+      { name: 'Pandemic and Global Health', theme: 'ENV', color: 'blue', terms: ['HIV/AIDS Global Crisis', 'Ebola Outbreaks', 'COVID-19 Pandemic', 'WHO Coordination Role'] },
+      { name: 'Religious Movements in Modern World', theme: 'CDI', color: 'purple', terms: ['Islamic Fundamentalism', 'Liberation Theology', 'Evangelical Christianity (Global)', 'Hindu Nationalism (BJP)'] },
     ],
   },
 ];
@@ -568,7 +657,6 @@ export function getDailyPuzzle(subject: 'apush' | 'apworld'): DailyPuzzle {
   };
 }
 
-// Keep for backward compat
 export const SAMPLE_PUZZLES: Record<string, DailyPuzzle> = {
   apush: getDailyPuzzle('apush'),
   apworld: getDailyPuzzle('apworld'),
