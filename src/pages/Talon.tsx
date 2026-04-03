@@ -368,6 +368,22 @@ const TalonPage = () => {
             </p>
           )}
 
+          {wrongAnswers.length > 0 && (
+            <div className="bg-card border border-border rounded-lg p-5 max-w-sm mx-auto mb-6 text-left">
+              <h4 className="text-xs font-body font-semibold uppercase tracking-wider text-muted-foreground mb-2">Missed Cards</h4>
+              <div className="flex flex-col gap-2">
+                {wrongAnswers.map((w, i) => (
+                  <div key={i} className="bg-secondary rounded-md px-3 py-2">
+                    <p className="text-sm font-body font-medium text-foreground">{w.event}</p>
+                    <p className="text-xs font-body text-muted-foreground mt-0.5">
+                      You said <span className="text-destructive font-medium">{w.guessed}</span> — Correct: <span className="text-primary font-medium">{w.correct}</span>
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           <div className="bg-card border border-border rounded-lg p-5 max-w-sm mx-auto">
             <h3 className="font-display text-sm font-semibold text-foreground mb-3">Keep practicing</h3>
             <div className="flex flex-col gap-2">
