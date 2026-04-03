@@ -138,13 +138,20 @@ const TalonPage = () => {
       });
   }, [user, subject, toast]);
 
-  const completeGame = useCallback((finalScore: number, finalMistakes: number, perfect: boolean) => {
+  const completeGame = useCallback((finalScore: number, finalMistakes: number, perfect: boolean, finalWrong: typeof wrongAnswers) => {
     localStorage.setItem(getTodayKey(subject), 'true');
+    localStorage.setItem(`talon_result_${subject}_${new Date().toISOString().split('T')[0]}`, JSON.stringify({
+      score: finalScore,
+      mistakes: finalMistakes,
+      perfect,
+      totalCards: cards.length,
+      wrong: finalWrong,
+    }));
     setHasPlayedToday(true);
     setIsComplete(true);
     saveScore(finalScore, finalMistakes, perfect);
     if (perfect) setShowWinAnimation(true);
-  }, [subject, saveScore]);
+  }, [subject, saveScore, cards.length]);
 
   const startGame = () => {
     setIsStarted(true);
