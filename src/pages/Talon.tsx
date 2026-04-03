@@ -75,7 +75,7 @@ const TalonPage = () => {
     setStreak(0);
     setMultiplier(1);
     setMistakes(0);
-    setShowExplanation(null);
+    setWrongAnswers([]);
     setIsStarted(false);
     setIsComplete(false);
     setIsPerfect(true);
