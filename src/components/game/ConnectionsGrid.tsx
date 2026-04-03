@@ -10,7 +10,7 @@ import { Shuffle } from 'lucide-react';
 
 interface ConnectionsGridProps {
   puzzle: DailyPuzzle;
-  onComplete?: () => void;
+  onComplete?: (won: boolean, mistakes: number, score: number) => void;
 }
 
 export function ConnectionsGrid({ puzzle, onComplete }: ConnectionsGridProps) {
@@ -34,12 +34,12 @@ export function ConnectionsGrid({ puzzle, onComplete }: ConnectionsGridProps) {
   if (state.isComplete && !showResults && !showWinAnimation) {
     const won = state.solved.length === 4;
     if (won && state.isPerfect) {
-      // Trigger win animation for perfect clears
       setTimeout(() => setShowWinAnimation(true), 300);
     } else {
       setTimeout(() => {
         setShowResults(true);
-        onComplete?.();
+        const score = calculateScore();
+        onComplete?.(won, state.mistakes, score.total);
       }, 300);
     }
   }
@@ -51,7 +51,8 @@ export function ConnectionsGrid({ puzzle, onComplete }: ConnectionsGridProps) {
         onComplete={() => {
           setShowWinAnimation(false);
           setShowResults(true);
-          onComplete?.();
+          const score = calculateScore();
+          onComplete?.(true, state.mistakes, score.total);
         }}
       />
     );
