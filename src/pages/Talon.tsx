@@ -217,7 +217,7 @@ const TalonPage = () => {
   const confirmExplanation = () => {
     setShowExplanation(null);
     if (currentIndex + 1 >= cards.length) {
-      completeGame(score, mistakes, false);
+      completeGame(score, mistakes, false, wrongAnswers);
       return;
     }
     setCurrentIndex(v => v + 1);
