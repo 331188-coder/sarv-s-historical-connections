@@ -178,7 +178,7 @@ const TalonPage = () => {
         setTotalCorrect(v => v + 1);
 
         if (currentIndex + 1 >= cards.length) {
-          completeGame(newScore, mistakes, isPerfect);
+          completeGame(newScore, mistakes, isPerfect, wrongAnswers);
         } else {
           setCurrentIndex(v => v + 1);
           setCardStartTime(Date.now());
