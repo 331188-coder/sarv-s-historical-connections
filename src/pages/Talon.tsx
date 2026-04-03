@@ -51,6 +51,7 @@ const TalonPage = () => {
   const [cardStartTime, setCardStartTime] = useState(0);
   const [totalCorrect, setTotalCorrect] = useState(0);
   const [mistakes, setMistakes] = useState(0);
+  const [wrongAnswers, setWrongAnswers] = useState<{ event: string; guessed: SpriteCategory; correct: SpriteCategory }[]>([]);
   const [hoveredSegment, setHoveredSegment] = useState<SpriteCategory | null>(null);
   const [activeSegment, setActiveSegment] = useState<SpriteCategory | null>(null);
   const [hexRadius, setHexRadius] = useState(148);
