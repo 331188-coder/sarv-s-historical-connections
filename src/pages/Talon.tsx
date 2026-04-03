@@ -194,7 +194,7 @@ const TalonPage = () => {
         setShowExplanation(currentCard.explanation);
       }
     },
-    [cardStartTime, cards.length, currentCard, currentIndex, isPerfect, showExplanation, streak, score, mistakes, completeGame]
+    [cardStartTime, cards.length, currentCard, currentIndex, isPerfect, showExplanation, streak, score, mistakes, wrongAnswers, completeGame]
   );
 
   const handleDrag = useCallback(
