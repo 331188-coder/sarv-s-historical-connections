@@ -231,14 +231,45 @@ const TalonPage = () => {
   // Locked screen
   if (hasPlayedToday && !isStarted) {
     const periods = getUniquePeriods(getDailyTalonCards(subject));
+    const savedResult = (() => {
+      try {
+        return JSON.parse(localStorage.getItem(`talon_result_${subject}_${new Date().toISOString().split('T')[0]}`) || 'null');
+      } catch { return null; }
+    })();
     return (
       <div className="min-h-[calc(100vh-3.5rem)]">
         <div className="container max-w-2xl mx-auto px-4 py-12 text-center">
-          <Lock className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+          <Lock className="h-10 w-10 text-muted-foreground mx-auto mb-4" />
           <h2 className="font-display text-2xl font-bold text-foreground">Daily Talon Complete</h2>
-          <p className="text-muted-foreground font-body text-sm max-w-md mx-auto mt-2 mb-8">
+          <p className="text-muted-foreground font-body text-sm max-w-md mx-auto mt-2 mb-6">
             {"You have already completed today's"} {subject === 'apush' ? 'APUSH' : 'AP World'} Talon round. Come back tomorrow for a new set of cards.
           </p>
+
+          {savedResult && (
+            <div className="bg-card border border-border rounded-lg p-5 max-w-sm mx-auto mb-6">
+              <p className="font-display text-3xl font-bold text-primary mb-1">{savedResult.score} PP</p>
+              <p className="text-sm text-muted-foreground font-body">
+                {savedResult.totalCards - savedResult.mistakes}/{savedResult.totalCards} correct
+                {savedResult.perfect ? ' — Perfect run' : ''}
+              </p>
+              {savedResult.wrong && savedResult.wrong.length > 0 && (
+                <div className="mt-4 text-left">
+                  <h4 className="text-xs font-body font-semibold uppercase tracking-wider text-muted-foreground mb-2">Missed Cards</h4>
+                  <div className="flex flex-col gap-2">
+                    {savedResult.wrong.map((w: { event: string; guessed: string; correct: string }, i: number) => (
+                      <div key={i} className="bg-secondary rounded-md px-3 py-2">
+                        <p className="text-sm font-body font-medium text-foreground">{w.event}</p>
+                        <p className="text-xs font-body text-muted-foreground mt-0.5">
+                          You said <span className="text-destructive font-medium">{w.guessed}</span> — Correct: <span className="text-primary font-medium">{w.correct}</span>
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
           <div className="bg-card border border-border rounded-lg p-5 max-w-sm mx-auto">
             <h3 className="font-display text-sm font-semibold text-foreground mb-3">Keep practicing</h3>
             <div className="flex flex-col gap-2">
