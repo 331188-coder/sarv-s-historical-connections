@@ -185,7 +185,9 @@ const TalonPage = () => {
         }
       } else {
         const newMistakes = mistakes + 1;
+        const newWrong = [...wrongAnswers, { event: currentCard.event, guessed: category, correct: currentCard.category }];
         setMistakes(newMistakes);
+        setWrongAnswers(newWrong);
         setStreak(0);
         setMultiplier(1);
         setIsPerfect(false);
